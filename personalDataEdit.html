@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Редактирование персональных данных</title>
+    <link rel="stylesheet" href="personalDataEdit.css">
+</head>
+<body>
+
+    <main class="container">
+        <header>
+            <h1>Редактирование персональных данных</h1>
+        </header>
+
+        <form action="#" method="post">
+            <div class="form-grid">
+                
+                <section class="ru-section">
+                    <h2 class="section-title">На русском языке:</h2>
+                    
+                    <div class="field-group">
+                        <label for="name-ru">Имя:</label>
+                        <input type="text" id="name-ru" name="name_ru" placeholder="Имя">
+                    </div>
+
+                    <div class="field-group">
+                        <label for="surname-ru">Фамилия:</label>
+                        <input type="text" id="surname-ru" name="surname_ru" placeholder="Фамилия">
+                    </div>
+
+                    <div class="field-group">
+                        <label for="email-ru">Электронная почта:</label>
+                        <input type="email" id="email-ru" name="email_ru" placeholder="Электронная почта">
+                    </div>
+
+                    <div class="field-group">
+                        <label for="pass-ru">Пароль:</label>
+                        <input type="password" id="pass-ru" name="pass_ru" placeholder="Пароль">
+                    </div>
+
+                    <div class="field-group">
+                        <label for="spec-code-ru">Код специализации:</label>
+                        <select id="spec-code-ru" name="spec_code_ru">
+                            <option value="">Код специализации</option>
+                            </select>
+                    </div>
+
+                    <div class="field-group">
+                        <label for="spec-name-ru">Название специализации:</label>
+                        <select id="spec-name-ru" name="spec_name_ru">
+                            <option value="">Название специализации</option>
+                            </select>
+                    </div>
+                    <div style="color: blue">Варианты специализаций и номеров выясним позже и добавим</div>
+                </section>
+
+                <section class="ch-section">
+                    <h2 class="section-title">На китайском языке:</h2>
+                    
+                                        <div class="field-group">
+                        <label for="name-ru">Имя:</label>
+                        <input type="text" id="name-ru" name="name_ru" placeholder="Имя">
+                    </div>
+
+                    <div class="field-group">
+                        <label for="surname-ru">Фамилия:</label>
+                        <input type="text" id="surname-ru" name="surname_ru" placeholder="Фамилия">
+                    </div>
+
+                    <div class="field-group">
+                        <label for="email-ru">Электронная почта:</label>
+                        <input type="email" id="email-ru" name="email_ru" placeholder="Электронная почта">
+                    </div>
+
+                    <div class="field-group">
+                        <label for="pass-ru">Пароль:</label>
+                        <input type="password" id="pass-ru" name="pass_ru" placeholder="Пароль">
+                    </div>
+
+                    <div class="field-group">
+                        <label for="spec-code-ru">Код специализации:</label>
+                        <select id="spec-code-ru" name="spec_code_ru">
+                            <option value="">Код специализации</option>
+                            </select>
+                    </div>
+
+                    <div class="field-group">
+                        <label for="spec-name-ru">Название специализации:</label>
+                        <select id="spec-name-ru" name="spec_name_ru">
+                            <option value="">Название специализации</option>
+                            </select>
+                    </div>
+
+                    </section>
+
+            </div>
+
+            <footer class="form-footer">
+                <p class="note">
+                    Данные о специализации (код и название) выбираются из предложенного списка 
+                    и заполняются автоматически (название по коду и код по названию).
+                </p>
+            </footer>
+        </form>
+    </main>
+
+</body>
+</html>

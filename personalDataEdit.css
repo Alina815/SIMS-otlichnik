@@ -1,0 +1,42 @@
+html {
+    font-size: 16px;
+
+}
+
+label {
+    font-size: 1.5rem;
+    display: inline-block; 
+    width: 30%;         
+    margin-right: 20px;   
+}
+
+input {
+    width: 35%;
+    height: 1.5rem;
+}
+
+select {
+    width: 35%;
+    height: 1.5rem;
+}
+
+.form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr; 
+    gap: 1 rem; 
+    align-items: start;
+}
+
+.field-group {
+    margin-top: 1.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.ru-section {
+    grid-column: 1;
+
+}
+.ch-section {
+    grid-column: 2;
+
+}
