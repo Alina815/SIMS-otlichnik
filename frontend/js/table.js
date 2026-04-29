@@ -22,7 +22,7 @@ async function loadTable() {
         row.insertCell(15).textContent = applicant.partner
         const actionsCell = row.insertCell(16)
         actionsCell.innerHTML = `
-            <button class="button" onclick="goToEditData(${applicant.id})">перейти на страницу редактирования</button>
+            <button class="button" id="editBtn" onclick="goToEditData(${applicant.id})">перейти на страницу редактирования</button>
         `
     })
 }

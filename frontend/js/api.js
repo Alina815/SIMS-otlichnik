@@ -14,7 +14,7 @@ const MOCK_APPLICANTS = [{
     passportNumber: '4510 123456',
     passportTime: '31.12.2030',
     passportPlace: 'УФМС России по г. Москва',
-    educationType: 'Высшее',
+    educationType: 'Злокачественное',
     doc1Number: 'АБ 1234567',
     doc2Number: '107824 0123456789',
     partner: 'ООО "Рога и копыта"'
@@ -33,7 +33,7 @@ const MOCK_APPLICANTS = [{
     passportNumber: '4510 654321',
     passportTime: '31.12.2028',
     passportPlace: 'УФМС России по г. Санкт-Петербург',
-    educationType: 'Высшее',
+    educationType: 'Доброкачественное',
     doc1Number: 'ВГ 7654321',
     doc2Number: '107824 9876543210',
     partner: 'ООО "Ромашка"'
@@ -52,7 +52,7 @@ const MOCK_APPLICANTS = [{
     passportNumber: '4510 789123',
     passportTime: '31.12.2032',
     passportPlace: 'УФМС России по г. Екатеринбург',
-    educationType: 'Среднее профессиональное',
+    educationType: 'Отсутствующее',
     doc1Number: 'ДЕ 4567890',
     doc2Number: '107824 4567890123',
     partner: 'ИП Сидоров'
