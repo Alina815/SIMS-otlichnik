@@ -3,11 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <title>общая таблица</title>
+    <link rel="stylesheet" href="../css/styles.css">
 </head>
 <body>
-    <button class="button" id="btnExport">
-        экспорт в Excel
-    </button>
+    <div id="toolbar">
+        <img src="../../design/exports/cat.jpg" alt="кот" style="width: 100px;">
+        <button class="button" id="btnExport">
+            экспортировать данные в Excel
+        </button>
+        <button class="button" id="btnAdd">
+            добавить нового абитуриента
+        </button>
+    </div>
     <table class="table" id="generalTable">
         <thead>
             <tr>
@@ -27,7 +34,7 @@
                 <th>номер документа 1</th>
                 <th>номер документа 2</th>
                 <th>партнёр</th>
-                <th>действия</th>
+                <th></th>
             </tr>
         </thead>
         <tbody id="tableBody">
