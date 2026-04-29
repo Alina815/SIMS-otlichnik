@@ -1,0 +1,16 @@
+#toolbar {
+    display:flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin: 1rem;
+}
+
+.button {
+    color: #9e1a1a;
+    font-size: 0.9rem
+}
+
+.table, .table th, .table td {
+    border: solid #000000 0.2rem;
+    font-size: 0.9rem
+}
