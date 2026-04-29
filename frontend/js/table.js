@@ -22,19 +22,17 @@ async function loadTable() {
         row.insertCell(15).textContent = applicant.partner
         const actionsCell = row.insertCell(16)
         actionsCell.innerHTML = `
-            <button onclick="goToEditData(${applicant.id})">✏️</button>
-            <button onclick="goToLoadDocs(${applicant.id})">📄</button>
+            <button class="button" onclick="goToEditData(${applicant.id})">перейти на страницу редактирования</button>
         `
     })
 }
 
 function goToEditData(id) {
-    window.open(`EditData.html?id=${id}`)
+    window.location.href = `EditData.html?id=${id}`
 }
 
-function goToLoadDocs(id) {
-    window.open(`LoadDocs.html?id=${id}`)
-}
+document.getElementById('btnAdd').onclick = () => {window.location.href = 'EditData.html'}
 
 document.getElementById('btnExport').onclick = exportToExcel
+
 loadTable()
