@@ -2,34 +2,37 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <title>Личная страница — Исправлено</title>
-    <link rel="stylesheet" href="C:\Study\front-end study\Project\personalDataEdit.css">
+    <title>Личная страница</title>
+    <link rel="stylesheet" href="../css/personalDataEdit.css">
 </head>
 <body>
 
     <!-- Слева: твоя анкета -->
     <aside class="sidebar">
         <div class="avatar-block">
-            <img src="photo_2026-04-27_08-13-59.jpg" alt="Аватар">
+            <img src="../../design/1.jpeg" alt="Аватар">
             <p><strong>Имя, Фамилия</strong></p>
-            <button type="button">+ ЗАГРУЗИТЬ ФОТО</button>
+            <button type="button" id="btnPhoto">+ ЗАГРУЗИТЬ ФОТО</button>
+        </div>
+        <div id="Russia">
+        <h3>НА РУССКОМ ЯЗЫКЕ:</h3>
+        <input type="text" placeholder="Имя">
+        <input type="text" placeholder="Фамилия">
+        <input type="email" placeholder="Эл. почта">
+        <input type="password" placeholder="Пароль">
+        <input type="text" placeholder="Код специализации">
+        <input type="text" placeholder="Название специализации">
         </div>
 
-        <h3>НА РУССКОМ ЯЗЫКЕ:</h3>
-        <input type="text" placeholder="Имя"><br>
-        <input type="text" placeholder="Фамилия"><br>
-        <input type="email" placeholder="Эл. почта"><br>
-        <input type="password" placeholder="Пароль"><br>
-        <input type="text" placeholder="Код специализации"><br>
-        <input type="text" placeholder="Название специализации">
-
+        <div id="China">
         <h3>НА КИТАЙСКОМ ЯЗЫКЕ:</h3>
-        <input type="text" placeholder="Имя"><br>
-        <input type="text" placeholder="Фамилия"><br>
-        <input type="email" placeholder="Эл. почта"><br>
-        <input type="password" placeholder="Пароль"><br>
-        <input type="text" placeholder="Код специализации"><br>
+        <input type="text" placeholder="Имя">
+        <input type="text" placeholder="Фамилия">
+        <input type="email" placeholder="Эл. почта">
+        <input type="password" placeholder="Пароль">
+        <input type="text" placeholder="Код специализации">
         <input type="text" placeholder="Название специализации">
+        </div>
     </aside>
 
     <!-- Справа: ряды документов -->
@@ -41,8 +44,8 @@
             <!-- Паспорт -->
             <div class="doc-card">
                 <h4>ПАСПОРТ</h4>
-                <img src="photo_2026-04-27_08-13-59.jpg" alt="doc">
-                <button type="button">+ РЕДАКТИРОВАТЬ ФОТО</button>
+                <img src="../../design/1.jpeg" alt="doc">
+                <button type="button" id="btnRUPassport">+ РЕДАКТИРОВАТЬ ФОТО</button>
                 <div class="fields">
                     <input type="text" placeholder="НОМЕР">
                     <input type="text" placeholder="КОГДА ВЫДАН">
@@ -54,15 +57,15 @@
             <!-- СНИЛС -->
             <div class="doc-card">
                 <h4>СНИЛС</h4>
-                <img src="photo_2026-04-27_08-13-59.jpg" alt="doc">
-                <button type="button">+ РЕДАКТИРОВАТЬ ФОТО</button>
+                <img src="../../design/1.jpeg" alt="doc">
+                <button type="button" id="btnRUSNILS">+ РЕДАКТИРОВАТЬ ФОТО</button>
                 <div class="fields"><input type="text" placeholder="НОМЕР"></div>
             </div>
             <!-- Аттестат -->
             <div class="doc-card">
                 <h4>АТТЕСТАТ/ДИПЛОМ</h4>
-                <img src="photo_2026-04-27_08-13-59.jpg" alt="doc">
-                <button type="button">+ РЕДАКТИРОВАТЬ ФОТО</button>
+                <img src="../../design/1.jpeg" alt="doc">
+                <button type="button" id="btnRuDoc1">+ РЕДАКТИРОВАТЬ ФОТО</button>
                 <div class="fields">
                     <input type="text" placeholder="НОМЕР">
                     <input type="text" placeholder="КОГДА ВЫДАН">
@@ -72,15 +75,15 @@
             <!-- Оценки -->
             <div class="doc-card">
                 <h4>ОЦЕНКИ</h4>
-                <img src="photo_2026-04-27_08-13-59.jpg" alt="doc">
-                <button type="button">+ РЕДАКТИРОВАТЬ ФОТО</button>
+                <img src="../../design/1.jpeg" alt="doc">
+                <button type="button" id="btnRUDoc2">+ РЕДАКТИРОВАТЬ ФОТО</button>
                 <div class="fields"><input type="text" placeholder="НОМЕР"></div>
             </div>
             <!-- Успеваемость -->
             <div class="doc-card">
                 <h4>УСПЕВАЕМОСТЬ</h4>
-                <img src="photo_2026-04-27_08-13-59.jpg" alt="doc">
-                <button type="button">+ РЕДАКТИРОВАТЬ ФОТО</button>
+                <img src="../../design/1.jpeg" alt="doc">
+                <button type="button" id="btnRUPerformance">+ РЕДАКТИРОВАТЬ ФОТО</button>
                 <div class="fields"><input type="text" placeholder="НОМЕР"></div>
             </div>
         </div>
@@ -90,8 +93,8 @@
         <div class="doc-row">
             <div class="doc-card">
                 <h4>ПАСПОРТ (CN)</h4>
-                <img src="photo_2026-04-27_08-13-59.jpg" alt="doc">
-                <button type="button">+ РЕДАКТИРОВАТЬ ФОТО</button>
+                <img src="../../design/1.jpeg" alt="doc">
+                <button type="button" id="btnCNPassport">+ РЕДАКТИРОВАТЬ ФОТО</button>
                 <div class="fields">
                     <input type="text" placeholder="НОМЕР">
                     <input type="text" placeholder="КОГДА ВЫДАН">
@@ -102,14 +105,14 @@
             </div>
             <div class="doc-card">
                 <h4>СНИЛС (CN)</h4>
-                <img src="photo_2026-04-27_08-13-59.jpg" alt="doc">
-                <button type="button">+ РЕДАКТИРОВАТЬ ФОТО</button>
+                <img src="../../design/1.jpeg" alt="doc">
+                <button type="button" id="btnCNSNILS">+ РЕДАКТИРОВАТЬ ФОТО</button>
                 <div class="fields"><input type="text" placeholder="НОМЕР"></div>
             </div>
             <div class="doc-card">
                 <h4>ДИПЛОМ (CN)</h4>
-                <img src="photo_2026-04-27_08-13-59.jpg" alt="doc">
-                <button type="button">+ РЕДАКТИРОВАТЬ ФОТО</button>
+                <img src="../../design/1.jpeg" alt="doc">
+                <button type="button" id="btnCNDoc1">+ РЕДАКТИРОВАТЬ ФОТО</button>
                 <div class="fields">
                     <input type="text" placeholder="НОМЕР">
                     <input type="text" placeholder="КОГДА ВЫДАН">
@@ -118,19 +121,19 @@
             </div>
             <div class="doc-card">
                 <h4>ОЦЕНКИ (CN)</h4>
-                <img src="photo_2026-04-27_08-13-59.jpg" alt="doc">
-                <button type="button">+ РЕДАКТИРОВАТЬ ФОТО</button>
+                <img src="../../design/1.jpeg" alt="doc">
+                <button type="button" id="btnCNDoc2">+ РЕДАКТИРОВАТЬ ФОТО</button>
                 <div class="fields"><input type="text" placeholder="НОМЕР"></div>
             </div>
             <div class="doc-card">
                 <h4>УСПЕВАЕМОСТЬ (CN)</h4>
-                <img src="photo_2026-04-27_08-13-59.jpg" alt="doc">
-                <button type="button">+ РЕДАКТИРОВАТЬ ФОТО</button>
+                <img src="../../design/1.jpeg" alt="doc">
+                <button type="button" id="btnCNPerformance">+ РЕДАКТИРОВАТЬ ФОТО</button>
                 <div class="fields"><input type="text" placeholder="НОМЕР"></div>
             </div>
         </div>
 
     </main>
-
+    <script src="../js/form.js"></script>
 </body>
 </html>

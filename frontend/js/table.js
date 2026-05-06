@@ -28,10 +28,10 @@ async function loadTable() {
 }
 
 function goToEditData(id) {
-    window.location.href = `EditData.html?id=${id}`
+    window.location.href = `personalDataEdit.html?id=${id}`
 }
 
-document.getElementById('btnAdd').onclick = () => {window.location.href = 'EditData.html'}
+document.getElementById('btnAdd').onclick = () => {window.location.href = 'personalDataEdit.html'}
 
 document.getElementById('btnExport').onclick = exportToExcel
 
