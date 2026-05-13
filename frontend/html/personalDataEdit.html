@@ -1,137 +1,140 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-    <meta charset="UTF-8">
-    <title>Личная страница</title>
-    <link rel="stylesheet" href="../css/personalDataEdit.css">
+   <meta charset="UTF-8">
+   <title>Личная страница</title>
+   <link rel="stylesheet" href="../css/personalDataEdit.css">
 </head>
 <body>
 
-    <!-- Слева: твоя анкета -->
-    <aside class="sidebar">
-        <div class="avatar-block">
-            <img src="../../design/1.jpeg" alt="Аватар">
-            <p><strong>Имя, Фамилия</strong></p>
-            <button class="button" id="btnPhoto">+ ЗАГРУЗИТЬ ФОТО</button>
-        </div>
-        <div id="Russia">
-        <h3>НА РУССКОМ ЯЗЫКЕ:</h3>
-        <input type="text" placeholder="Имя">
-        <input type="text" placeholder="Фамилия">
-        <input type="email" placeholder="Эл. почта">
-        <input type="password" placeholder="Пароль">
-        <input type="text" placeholder="Код специализации">
-        <input type="text" placeholder="Название специализации">
-        </div>
+   <!-- Слева: твоя анкета -->
+   <aside class="sidebar">
+       <div class="avatar-block">
+           <img src="../../design/1.jpeg" alt="Аватар">
+           <button class="button" id="btnPhoto">+ ЗАГРУЗИТЬ ФОТО</button>
+           <select id="specializationCode">
+               <option value="">Код специализации</option>"
+           </select>
+           <select id="specializationName">
+               <option value="">Название специализации</option>"
+           </select>
+           <button class="button" id="btnSave">СОХРАНИТЬ ИЗМЕНЕНИЯ</button>
+           <button class="button" id="btnDelete">УДАЛИТЬ АБИТУРИЕНТА</button>
+       </div>
+       <div id="Russia">
+       <h3>НА РУССКОМ ЯЗЫКЕ:</h3>
+       <input type="text" placeholder="Имя">
+       <input type="text" placeholder="Фамилия">
+       <input type="email" placeholder="Эл. почта">
+       <input type="password" placeholder="Пароль">
+       </div>
 
-        <div id="China">
-        <h3>НА КИТАЙСКОМ ЯЗЫКЕ:</h3>
-        <input type="text" placeholder="Имя">
-        <input type="text" placeholder="Фамилия">
-        <input type="email" placeholder="Эл. почта">
-        <input type="password" placeholder="Пароль">
-        <input type="text" placeholder="Код специализации">
-        <input type="text" placeholder="Название специализации">
-        </div>
-    </aside>
+       <div id="China">
+       <h3>НА КИТАЙСКОМ ЯЗЫКЕ:</h3>
+       <input type="text" placeholder="Имя">
+       <input type="text" placeholder="Фамилия">
+       <input type="email" placeholder="Эл. почта">
+       <input type="password" placeholder="Пароль">
+       </div>
+   </aside>
 
-    <!-- Справа: ряды документов -->
-    <main class="content">
-        
-        <!-- РЯД 1: РУССКИЙ ЯЗЫК -->
-        <div class="doc-row">
-            <!-- Паспорт -->
-            <div class="doc-card">
-                <h4>ПАСПОРТ (RU)</h4>
-                <img src="../../design/1.jpeg" alt="doc">
-                <button class="button" id="btnRUPassport">+ ЗАГРУЗИТЬ СКАН</button>
-                <div class="fields">
-                    <input type="text" placeholder="НОМЕР">
-                    <input type="text" placeholder="КОГДА ВЫДАН">
-                    <input type="text" placeholder="КЕМ ВЫДАН">
-                    <input type="text" placeholder="МЕСТО ВЫДАЧИ">
-                    <input type="text" placeholder="ПРОВИНЦИЯ РОЖДЕНИЯ">
-                </div>
-            </div>
-            <!-- СНИЛС -->
-            <div class="doc-card">
-                <h4>СНИЛС (RU)</h4>
-                <img src="../../design/1.jpeg" alt="doc">
-                <button class="button" id="btnRUSNILS">+ ЗАГРУЗИТЬ СКАН</button>
-                <div class="fields"><input type="text" placeholder="НОМЕР"></div>
-            </div>
-            <!-- Аттестат -->
-            <div class="doc-card">
-                <h4>ДОКУМЕНТ 1 (RU)</h4>
-                <img src="../../design/1.jpeg" alt="doc">
-                <button class="button" id="btnRuDoc1">+ ЗАГРУЗИТЬ СКАН</button>
-                <div class="fields">
-                    <input type="text" placeholder="НОМЕР">
-                    <input type="text" placeholder="КОГДА ВЫДАН">
-                    <input type="text" placeholder="НАЗВАНИЕ УЧ. ЗАВЕДЕНИЯ">
-                </div>
-            </div>
-            <!-- Оценки -->
-            <div class="doc-card">
-                <h4>ДОКУМЕНТ 2 (RU)</h4>
-                <img src="../../design/1.jpeg" alt="doc">
-                <button class="button" id="btnRUDoc2">+ ЗАГРУЗИТЬ СКАН</button>
-                <div class="fields"><input type="text" placeholder="НОМЕР"></div>
-            </div>
-            <!-- Успеваемость -->
-            <div class="doc-card">
-                <h4>УСПЕВАЕМОСТЬ (RU)</h4>
-                <img src="../../design/1.jpeg" alt="doc">
-                <button class="button" id="btnRUPerformance">+ ЗАГРУЗИТЬ СКАН</button>
-                <div class="fields"><input type="text" placeholder="НОМЕР"></div>
-            </div>
-        </div>
+   <!-- Справа: ряды документов -->
+   <main class="content">
+      
+       <!-- РЯД 1: РУССКИЙ ЯЗЫК -->
+       <div class="doc-row">
+           <!-- Паспорт -->
+           <div class="doc-card">
+               <h4>ПАСПОРТ (RU)</h4>
+               <img src="../../design/1.jpeg" alt="doc">
+               <button class="button" id="btnRUPassport">+ ЗАГРУЗИТЬ СКАН</button>
+               <div class="fields">
+                   <input type="text" placeholder="НОМЕР">
+                   <input type="text" placeholder="КОГДА ВЫДАН">
+                   <input type="text" placeholder="КЕМ ВЫДАН">
+                   <input type="text" placeholder="МЕСТО ВЫДАЧИ">
+                   <input type="text" placeholder="ПРОВИНЦИЯ РОЖДЕНИЯ">
+               </div>
+           </div>
+           <!-- СНИЛС -->
+           <div class="doc-card">
+               <h4>СНИЛС (RU)</h4>
+               <img src="../../design/1.jpeg" alt="doc">
+               <button class="button" id="btnRUSNILS">+ ЗАГРУЗИТЬ СКАН</button>
+               <div class="fields"><input type="text" placeholder="НОМЕР"></div>
+           </div>
+           <!-- Аттестат -->
+           <div class="doc-card">
+               <h4>ДОКУМЕНТ 1 (RU)</h4>
+               <img src="../../design/1.jpeg" alt="doc">
+               <button class="button" id="btnRuDoc1">+ ЗАГРУЗИТЬ СКАН</button>
+               <div class="fields">
+                   <input type="text" placeholder="НОМЕР">
+                   <input type="text" placeholder="КОГДА ВЫДАН">
+                   <input type="text" placeholder="НАЗВАНИЕ УЧ. ЗАВЕДЕНИЯ">
+               </div>
+           </div>
+           <!-- Оценки -->
+           <div class="doc-card">
+               <h4>ДОКУМЕНТ 2 (RU)</h4>
+               <img src="../../design/1.jpeg" alt="doc">
+               <button class="button" id="btnRUDoc2">+ ЗАГРУЗИТЬ СКАН</button>
+               <div class="fields"><input type="text" placeholder="НОМЕР"></div>
+           </div>
+           <!-- Успеваемость -->
+           <div class="doc-card">
+               <h4>УСПЕВАЕМОСТЬ (RU)</h4>
+               <img src="../../design/1.jpeg" alt="doc">
+               <button class="button" id="btnRUPerformance">+ ЗАГРУЗИТЬ СКАН</button>
+               <div class="fields"><input type="text" placeholder="НОМЕР"></div>
+           </div>
+       </div>
 
-        <!-- РЯД 2: КИТАЙСКИЙ ЯЗЫК -->
-        <div class="doc-row">
-            <div class="doc-card">
-                <h4>ПАСПОРТ (CN)</h4>
-                <img src="../../design/1.jpeg" alt="doc">
-                <button class="button" id="btnCNPassport">+ ЗАГРУЗИТЬ СКАН</button>
-                <div class="fields">
-                    <input type="text" placeholder="НОМЕР">
-                    <input type="text" placeholder="КОГДА ВЫДАН">
-                    <input type="text" placeholder="КЕМ ВЫДАН">
-                    <input type="text" placeholder="МЕСТО ВЫДАЧИ">
-                    <input type="text" placeholder="ПРОВИНЦИЯ РОЖДЕНИЯ">
-                </div>
-            </div>
-            <div class="doc-card">
-                <h4>СНИЛС (CN)</h4>
-                <img src="../../design/1.jpeg" alt="doc">
-                <button class="button" id="btnCNSNILS">+ ЗАГРУЗИТЬ СКАН</button>
-                <div class="fields"><input type="text" placeholder="НОМЕР"></div>
-            </div>
-            <div class="doc-card">
-                <h4>ДОКУМЕНТ 1 (CN)</h4>
-                <img src="../../design/1.jpeg" alt="doc">
-                <button class="button" id="btnCNDoc1">+ ЗАГРУЗИТЬ СКАН</button>
-                <div class="fields">
-                    <input type="text" placeholder="НОМЕР">
-                    <input type="text" placeholder="КОГДА ВЫДАН">
-                    <input type="text" placeholder="НАЗВАНИЕ УЧ. ЗАВЕДЕНИЯ">
-                </div>
-            </div>
-            <div class="doc-card">
-                <h4>ДОКУМЕНТ 2 (CN)</h4>
-                <img src="../../design/1.jpeg" alt="doc">
-                <button class="button" id="btnCNDoc2">+ ЗАГРУЗИТЬ СКАН</button>
-                <div class="fields"><input type="text" placeholder="НОМЕР"></div>
-            </div>
-            <div class="doc-card">
-                <h4>УСПЕВАЕМОСТЬ (CN)</h4>
-                <img src="../../design/1.jpeg" alt="doc">
-                <button class="button" id="btnCNPerformance">+ ЗАГРУЗИТЬ СКАН</button>
-                <div class="fields"><input type="text" placeholder="НОМЕР"></div>
-            </div>
-        </div>
+       <!-- РЯД 2: КИТАЙСКИЙ ЯЗЫК -->
+       <div class="doc-row">
+           <div class="doc-card">
+               <h4>ПАСПОРТ (CN)</h4>
+               <img src="../../design/1.jpeg" alt="doc">
+               <button class="button" id="btnCNPassport">+ ЗАГРУЗИТЬ СКАН</button>
+               <div class="fields">
+                   <input type="text" placeholder="НОМЕР">
+                   <input type="text" placeholder="КОГДА ВЫДАН">
+                   <input type="text" placeholder="КЕМ ВЫДАН">
+                   <input type="text" placeholder="МЕСТО ВЫДАЧИ">
+                   <input type="text" placeholder="ПРОВИНЦИЯ РОЖДЕНИЯ">
+               </div>
+           </div>
+           <div class="doc-card">
+               <h4>СНИЛС (CN)</h4>
+               <img src="../../design/1.jpeg" alt="doc">
+               <button class="button" id="btnCNSNILS">+ ЗАГРУЗИТЬ СКАН</button>
+               <div class="fields"><input type="text" placeholder="НОМЕР"></div>
+           </div>
+           <div class="doc-card">
+               <h4>ДОКУМЕНТ 1 (CN)</h4>
+               <img src="../../design/1.jpeg" alt="doc">
+               <button class="button" id="btnCNDoc1">+ ЗАГРУЗИТЬ СКАН</button>
+               <div class="fields">
+                   <input type="text" placeholder="НОМЕР">
+                   <input type="text" placeholder="КОГДА ВЫДАН">
+                   <input type="text" placeholder="НАЗВАНИЕ УЧ. ЗАВЕДЕНИЯ">
+               </div>
+           </div>
+           <div class="doc-card">
+               <h4>ДОКУМЕНТ 2 (CN)</h4>
+               <img src="../../design/1.jpeg" alt="doc">
+               <button class="button" id="btnCNDoc2">+ ЗАГРУЗИТЬ СКАН</button>
+               <div class="fields"><input type="text" placeholder="НОМЕР"></div>
+           </div>
+           <div class="doc-card">
+               <h4>УСПЕВАЕМОСТЬ (CN)</h4>
+               <img src="../../design/1.jpeg" alt="doc">
+               <button class="button" id="btnCNPerformance">+ ЗАГРУЗИТЬ СКАН</button>
+               <div class="fields"><input type="text" placeholder="НОМЕР"></div>
+           </div>
+       </div>
 
-    </main>
-    <script src="../js/form.js"></script>
+   </main>
+   <script src="../js/form.js"></script>
 </body>
 </html>
