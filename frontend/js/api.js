@@ -69,11 +69,37 @@ async function getApplicants() {
    return response.json()
 }
 
+function exportToExcel() {
+   if (USE_MOCK) {
+       alert('Экспорт в Excel (mock-test)')
+       return
+   }
+   window.open(`${API_URL}/export/applicants`)
+}
+
 async function getApplicantById(id) {
    if (USE_MOCK) {
        return MOCK_APPLICANTS.find(a => a.id == parseInt(id));
    }
    const response = await fetch(`${API_URL}/applicants/${id}`);
+   return response.json();
+}
+
+async function updateApplicant(id, formData) {
+   const response = await fetch(`/api/applicants/${id}`, {
+       method: 'PUT',
+       headers: { 'Content-Type': 'application/json' },
+       body: JSON.stringify(formData)
+   });
+   return response.json();
+}
+
+async function createApplicant(formData) {
+   const response = await fetch('/api/applicants', {
+       method: 'POST',
+       headers: { 'Content-Type': 'application/json' },
+       body: JSON.stringify(formData)
+   });
    return response.json();
 }
 
@@ -87,36 +113,28 @@ async function deleteApplicant(id) {
        return { success: false, message: 'Абитуриент не найден' };
    }
   
-   const response = await fetch(`${API_URL}/applicants/${id}`, {
+    const response = await fetch(`${API_URL}/applicants/${id}`, {
        method: 'DELETE'
-   });
+    });
    return response.json();
 }
 
-function exportToExcel() {
-   if (USE_MOCK) {
-       alert('Экспорт в Excel (mock-test)')
-       return
-   }
-   window.open(`${API_URL}/export/applicants`)
-}
-
-async function createApplicant(formData) {
-   const response = await fetch('/api/applicants', {
-       method: 'POST',
-       headers: { 'Content-Type': 'application/json' },
-       body: JSON.stringify(formData)
-   });
-   return response.json();
-}
-
-async function updateApplicant(id, formData) {
-   const response = await fetch(`/api/applicants/${id}`, {
-       method: 'PUT',
-       headers: { 'Content-Type': 'application/json' },
-       body: JSON.stringify(formData)
-   });
-   return response.json();
+async function uploadPhoto(applicantId, file) {
+    if (USE_MOCK) {
+        console.log(`[MOCK] Загрузка фото для абитуриента ${applicantId}: ${file.name}`);
+        return { success: true, file_path: `/mock/photos/${applicantId}_${file.name}` };
+    }
+    
+    const formData = new FormData();
+    formData.append('applicant_id', applicantId);
+    formData.append('photo', file);
+    
+    const response = await fetch(`${API_URL}/upload/photo`, {
+        method: 'POST',
+        body: formData
+    });
+    
+    return response.json();
 }
 
 async function getSpecializations() {

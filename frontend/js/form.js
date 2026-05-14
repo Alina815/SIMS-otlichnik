@@ -1,3 +1,37 @@
+const urlParams = new URLSearchParams(window.location.search);
+const applicantId = urlParams.get('id');
+
+async function loadApplicantData() {
+    if (!applicantId) return;
+    try {
+        const applicant = await getApplicantById(applicantId);
+        if (applicant) {
+            document.querySelector('#Russia input:nth-child(1)').value = applicant.lastNameRussian || '';
+            document.querySelector('#Russia input:nth-child(2)').value = applicant.firstNameRussian || '';
+            document.querySelector('#Russia input:nth-child(3)').value = applicant.email || '';
+            document.querySelector('#Russia input:nth-child(4)').value = applicant.password || '';
+            document.querySelector('#China input:nth-child(1)').value = applicant.lastNameChinese || '';
+            document.querySelector('#China input:nth-child(2)').value = applicant.firstNameChinese || '';
+            document.querySelector('#China input:nth-child(3)').value = applicant.emailCn || '';
+            document.querySelector('#China input:nth-child(4)').value = applicant.passwordCn || '';
+            const codeSelect = document.getElementById('specializationCode');
+            const nameSelect = document.getElementById('specializationName');
+            if (applicant.specializationCode && codeSelect) {
+                codeSelect.value = applicant.specializationCode;
+                codeSelect.dispatchEvent(new Event('change'));
+            }
+            if (applicant.specializationName && nameSelect) {
+                const found = specializationsList.find(spec => spec.code === applicant.specializationCode);
+                if (found) {
+                    nameSelect.value = found.code;
+                }
+            }
+        }
+    } catch (error) {
+        console.error('Ошибка загрузки данных абитуриента:', error);
+    }
+}
+
 const saveBtn = document.getElementById('btnSave');
 saveBtn.addEventListener('click', async () => {
    const selectedCode = document.getElementById('specializationCode')?.value || '';
@@ -51,6 +85,39 @@ saveBtn.addEventListener('click', async () => {
    }
 });
 
+const deleteBtn = document.getElementById('btnDelete');
+deleteBtn.addEventListener('click', async () => {
+   if (!applicantId) {
+       alert('ID абитуриента не найден. Возможно, это новый абитуриент.');
+       return;
+   }
+   const userConfirmed = confirm(
+       'Вы уверены, что хотите удалить этого абитуриента?\n\n' +
+       'Это действие НЕЛЬЗЯ будет отменить. Все данные и документы будут удалены.'
+   );
+   if (!userConfirmed) {
+       return;
+   }
+   deleteBtn.textContent = 'УДАЛЕНИЕ...';
+   deleteBtn.disabled = true;
+   try {
+       const result = await deleteApplicant(applicantId);
+           if (result.success === true || result.ok === true) {
+           alert('Абитуриент успешно удалён!');
+           window.location.href = 'GeneralTable.html';
+       } else {
+           alert(`Ошибка удаления: ${result.message || 'Неизвестная ошибка'}`);
+           deleteBtn.textContent = 'УДАЛИТЬ АБИТУРИЕНТА';
+           deleteBtn.disabled = false;
+       }
+   } catch (error) {
+       console.error('Ошибка сети:', error);
+       alert('Ошибка соединения с сервером. Проверьте, запущен ли бэкенд.');
+       deleteBtn.textContent = 'УДАЛИТЬ АБИТУРИЕНТА';
+       deleteBtn.disabled = false;
+   }
+});
+
 const fileInput = document.createElement("input");
 fileInput.type = 'file';
 fileInput.accept = 'image/*';
@@ -97,40 +164,6 @@ document.getElementById("btnCNDoc1").onclick = () => openFileSelector(DocImages[
 document.getElementById("btnCNDoc2").onclick = () => openFileSelector(DocImages[8]);
 document.getElementById("btnCNPerformance").onclick = () => openFileSelector(DocImages[9]);
 
-const urlParams = new URLSearchParams(window.location.search);
-const applicantId = urlParams.get('id');
-const deleteBtn = document.getElementById('btnDelete');
-deleteBtn.addEventListener('click', async () => {
-   if (!applicantId) {
-       alert('ID абитуриента не найден. Возможно, это новый абитуриент.');
-       return;
-   }
-   const userConfirmed = confirm(
-       'Вы уверены, что хотите удалить этого абитуриента?\n\n' +
-       'Это действие НЕЛЬЗЯ будет отменить. Все данные и документы будут удалены.'
-   );
-   if (!userConfirmed) {
-       return;
-   }
-   deleteBtn.textContent = 'УДАЛЕНИЕ...';
-   deleteBtn.disabled = true;
-   try {
-       const result = await deleteApplicant(applicantId);
-           if (result.success === true || result.ok === true) {
-           alert('Абитуриент успешно удалён!');
-           window.location.href = 'GeneralTable.html';
-       } else {
-           alert(`Ошибка удаления: ${result.message || 'Неизвестная ошибка'}`);
-           deleteBtn.textContent = 'УДАЛИТЬ АБИТУРИЕНТА';
-           deleteBtn.disabled = false;
-       }
-   } catch (error) {
-       console.error('Ошибка сети:', error);
-       alert('Ошибка соединения с сервером. Проверьте, запущен ли бэкенд.');
-       deleteBtn.textContent = 'УДАЛИТЬ АБИТУРИЕНТА';
-       deleteBtn.disabled = false;
-   }
-});
 
 let specializationsList = [];
 

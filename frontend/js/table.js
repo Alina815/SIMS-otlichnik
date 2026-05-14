@@ -33,6 +33,6 @@ function goToEditData(id) {
 
 document.getElementById('btnAdd').onclick = () => {window.location.href = 'personalDataEdit.html'}
 
-document.getElementById('btnExport').onclick = exportToExcel
+document.getElementById('btnExport').onclick = exportToExcel()
 
 loadTable()
