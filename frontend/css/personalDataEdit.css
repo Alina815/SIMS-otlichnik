@@ -17,10 +17,11 @@ body {
 .avatar-block {
    display: flex;
    flex-direction: column;
+   width: 100%;
    gap: 0.5rem;
    align-items: center;
    font-size: 1.2rem;
-   margin-bottom: 3rem;
+   margin-bottom: 1rem;
 }
 
 .avatar-block img {
@@ -29,11 +30,21 @@ body {
    border-radius: 0.4rem;
 }
 
-.button {
-   border: solid darkblue 0.1rem;
+.sidebar input, select {
+   width: 100%;
+   font-size: 0.9rem;
+   box-sizing: border-box;
+   margin: 0.2rem 0;
+   padding: 0.4rem;
+   border: 0.1rem solid #000;
    border-radius: 0.3rem;
-   background-color: skyblue;
-   color: darkblue;
+}
+
+.button {
+   border: solid #527799 0.1rem;
+   border-radius: 0.3rem;
+   background-color: #BDCBD6;
+   color: #527799;
    gap: 1rem;
    font-size: 1.2rem;
    padding: 0.5rem;
@@ -41,15 +52,15 @@ body {
 }
 
 .button:hover {
-   border: solid black 0.1rem;
-   background-color: darkblue;
-   color: skyblue;
+   border: solid #BDCBD6 0.1rem;
+   background-color: #527799;
+   color: #BDCBD6;
 }
 
 .button:active {
    border: solid darkgrey 0.1rem;
-   background-color: grey;
-   color: white;
+   background-color: lightgrey;
+   color: darkgrey;
 }
 
 #Russia, #China {
@@ -57,12 +68,6 @@ body {
    flex-direction: column;
    gap: 0.5rem;
    margin-bottom: 0rem;
-}
-
-#Russia input, #China input {
-   padding: 0.5rem;
-   border: 0.1rem solid #000;
-   border-radius: 0.3rem;
 }
 
 .fields {
@@ -97,32 +102,26 @@ body {
 }
 
 #btnSave {
-   border: solid darkgreen 0.1rem;
-   background-color: lightgreen;
-   color: darkgreen;
+   border: solid #505D40 0.1rem;
+   background-color: #8DA075;
+   color: #505D40;
 }
 
 #btnSave:hover {
-   border: solid black 0.1rem;
-   background-color: darkgreen;
-   color: lightgreen;
+   border: solid #8DA075 0.1rem;
+   background-color: #505D40;
+   color: #8DA075;
 }
 
 
 #btnDelete {
-   border: solid darkred 0.1rem;
-   background-color: red;
-   color: darkred;
+   border: solid #8E2A24 0.1rem;
+   background-color: #BA7C78;
+   color: #8E2A24;
 }
 
 #btnDelete:hover {
-   border: solid black 0.1rem;
-   background-color: darkred;
-   color: red;
-}
-
-select {
-   width: 100%;
-   font-size: 0.9rem;
-   padding: 0.4rem;
+   border: solid #BA7C78 0.1rem;
+   background-color: #8E2A24;
+   color: #BA7C78;
 }
