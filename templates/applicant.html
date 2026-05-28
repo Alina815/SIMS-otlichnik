@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>Страница абитуриента</title>
+  <link rel="stylesheet" href="/static/css/style.css">
+  <style>
+    .applicant-layout {
+      display: flex;
+      gap: 24px;
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+    .left-panel {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      align-items: center;
+      flex-shrink: 0;
+    }
+    .right-panel { flex: 1; }
+    .fields-section { margin-bottom: 24px; }
+    .bilingual-cols {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+    }
+    .col-header {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-muted);
+      padding-bottom: 10px;
+      border-bottom: 2px solid var(--accent);
+      margin-bottom: 14px;
+    }
+    .field-row {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      margin-bottom: 10px;
+    }
+    .field-value {
+      padding: 7px 10px;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      font-size: 13px;
+      min-height: 34px;
+      color: var(--text);
+    }
+    .field-value.empty { color: var(--text-muted); font-style: italic; }
+    .action-buttons { display: flex; flex-direction: column; gap: 10px; width: 180px; }
+    .action-buttons .btn { width: 100%; justify-content: center; }
+  </style>
+</head>
+<body>
+<div class="app-wrapper">
+  <div class="topbar">
+    <a class="topbar-back" href="/">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
+      Назад к таблице
+    </a>
+    <span class="topbar-title" id="page-title">Страница абитуриента</span>
+  </div>
+  <div class="page-content">
+    <div id="loading" class="loading"><div class="spinner"></div>Загрузка...</div>
+    <div id="content" style="display:none">
+      <div class="applicant-layout">
+        <div class="left-panel">
+          <div class="photo-placeholder" id="photo-container">
+            <div class="placeholder-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
+              <span>Фото</span>
+            </div>
+          </div>
+          <input type="file" id="photo-input" accept="image/*" onchange="uploadPhoto(this)">
+          <button class="btn btn-secondary" onclick="document.getElementById('photo-input').click()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M17 8l-5-5-5 5M12 3v12"/></svg>
+            Загрузить фото
+          </button>
+
+          <div class="divider" style="width:100%"></div>
+
+          <div class="action-buttons">
+            <button class="btn btn-primary" id="edit-btn">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+              Редактировать данные
+            </button>
+            <button class="btn btn-secondary" id="docs-btn">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8zM14 2v6h6M16 13H8M16 17H8M10 9H8"/></svg>
+              Загрузить сканы документов
+            </button>
+          </div>
+        </div>
+
+        <div class="right-panel">
+          <div class="bilingual-cols">
+            <div>
+              <div class="col-header">На русском языке</div>
+              <div class="field-row"><label class="form-label">Имя</label><div class="field-value" id="ru-first-name">—</div></div>
+              <div class="field-row"><label class="form-label">Фамилия</label><div class="field-value" id="ru-last-name">—</div></div>
+              <div class="field-row"><label class="form-label">Email</label><div class="field-value" id="email">—</div></div>
+              <div class="field-row"><label class="form-label">Пароль</label><div class="field-value" id="password">—</div></div>
+              <div class="field-row"><label class="form-label">Код специализации</label><div class="field-value" id="spec-code">—</div></div>
+              <div class="field-row"><label class="form-label">Название специализации</label><div class="field-value" id="spec-name">—</div></div>
+            </div>
+            <div>
+              <div class="col-header">На китайском языке</div>
+              <div class="field-row"><label class="form-label">Имя</label><div class="field-value" id="cn-first-name">—</div></div>
+              <div class="field-row"><label class="form-label">Фамилия</label><div class="field-value" id="cn-last-name">—</div></div>
+              <div class="field-row"><label class="form-label">Email</label><div class="field-value" id="cn-email">—</div></div>
+              <div class="field-row"><label class="form-label">Пароль</label><div class="field-value" id="cn-password">—</div></div>
+              <div class="field-row"><label class="form-label">Код специализации</label><div class="field-value" id="cn-spec-code">—</div></div>
+              <div class="field-row"><label class="form-label">Название специализации</label><div class="field-value" id="cn-spec-name">—</div></div>
+            </div>
+          </div>
+
+          <div class="divider"></div>
+          <div class="fields-section">
+            <div class="section-header">Дополнительные данные</div>
+            <div class="form-grid">
+              <div class="field-row"><label class="form-label">СНИЛС</label><div class="field-value" id="snils">—</div></div>
+              <div class="field-row"><label class="form-label">Номер паспорта</label><div class="field-value" id="passport-number">—</div></div>
+              <div class="field-row"><label class="form-label">Срок действия паспорта</label><div class="field-value" id="passport-expiry">—</div></div>
+              <div class="field-row"><label class="form-label">Кем выдан паспорт</label><div class="field-value" id="passport-issued">—</div></div>
+              <div class="field-row"><label class="form-label">Тип образования</label><div class="field-value" id="edu-type">—</div></div>
+              <div class="field-row"><label class="form-label">Партнёр</label><div class="field-value" id="partner">—</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div id="toast-container" class="toast-container"></div>
+<script src="/static/js/utils.js"></script>
+<script>
+const APPLICANT_ID = {{ applicant_id }};
+let applicantData = null;
+
+function setField(id, val) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  if (val) {
+    el.textContent = val;
+    el.classList.remove('empty');
+  } else {
+    el.textContent = '—';
+    el.classList.add('empty');
+  }
+}
+
+async function loadApplicant() {
+  try {
+    applicantData = await apiGet(`/api/applicants/${APPLICANT_ID}`);
+    const a = applicantData;
+
+    document.getElementById('page-title').textContent =
+      `${a.last_name_ru || ''} ${a.first_name_ru || ''}`.trim() || 'Абитуриент';
+
+    setField('ru-first-name', a.first_name_ru);
+    setField('ru-last-name', a.last_name_ru);
+    setField('email', a.email);
+    setField('password', a.password);
+    setField('spec-code', a.specialization_code);
+    setField('spec-name', a.specialization_name);
+
+    setField('cn-first-name', a.first_name_cn);
+    setField('cn-last-name', a.last_name_cn);
+    setField('cn-email', a.email);
+    setField('cn-password', a.password);
+    setField('cn-spec-code', a.specialization_code);
+    setField('cn-spec-name', a.specialization_name);
+
+    setField('snils', a.snils);
+    setField('passport-number', a.passport_number);
+    setField('passport-expiry', a.passport_expiry);
+    setField('passport-issued', a.passport_issued_by);
+    setField('edu-type', a.education_type);
+    setField('partner', a.partner);
+
+    if (a.photo_path) {
+      const container = document.getElementById('photo-container');
+      container.innerHTML = `<img src="/uploads/${a.photo_path}" alt="Фото">`;
+    }
+
+    document.getElementById('loading').style.display = 'none';
+    document.getElementById('content').style.display = 'block';
+  } catch (e) {
+    showToast('Ошибка загрузки', 'error');
+  }
+}
+
+async function uploadPhoto(input) {
+  if (!input.files[0]) return;
+  const fd = new FormData();
+  fd.append('applicant_id', APPLICANT_ID);
+  fd.append('file', input.files[0]);
+  try {
+    const res = await uploadFile('/api/upload/photo', fd);
+    const container = document.getElementById('photo-container');
+    container.innerHTML = `<img src="${res.url}" alt="Фото">`;
+    showToast('Фото загружено', 'success');
+  } catch (e) {
+    showToast('Ошибка загрузки фото', 'error');
+  }
+}
+
+document.getElementById('edit-btn').onclick = () => navigate(`/edit/${APPLICANT_ID}`);
+document.getElementById('docs-btn').onclick = () => navigate(`/documents/${APPLICANT_ID}`);
+
+loadApplicant();
+</script>
+</body>
+</html>

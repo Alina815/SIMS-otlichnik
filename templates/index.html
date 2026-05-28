@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>Общая таблица</title>
+  <link rel="stylesheet" href="/static/css/style.css">
+  <style>
+    .page-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 16px;
+    }
+    .page-header h1 { font-size: 18px; font-weight: 700; }
+    .table-container { height: calc(100vh - 120px); }
+    .table-wrapper { height: 100%; }
+    .action-cell { display: flex; gap: 6px; }
+    td.action-cell { max-width: none; }
+  </style>
+</head>
+<body>
+<div class="app-wrapper">
+  <div class="topbar">
+    <span class="topbar-title">📋 Система учёта абитуриентов</span>
+  </div>
+  <div class="page-content">
+    <div class="page-header">
+      <h1>Общая таблица</h1>
+      <div class="btn-toolbar">
+        <button class="btn btn-primary" onclick="addApplicant()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
+          Добавить абитуриента
+        </button>
+        <button class="btn btn-secondary" onclick="exportExcel()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
+          Экспорт в Excel
+        </button>
+      </div>
+    </div>
+
+    <div class="table-container">
+      <div class="table-wrapper" id="table-wrapper">
+        <div class="loading"><div class="spinner"></div>Загрузка...</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="toast-container" class="toast-container"></div>
+
+<script src="/static/js/utils.js"></script>
+<script>
+let applicants = [];
+let sortCol = null, sortDir = 1;
+
+const columns = [
+  { key: 'last_name_ru',           label: 'Фамилия (рус)' },
+  { key: 'first_name_ru',          label: 'Имя (рус)' },
+  { key: 'last_name_cn',           label: 'Фамилия (кит)' },
+  { key: 'first_name_cn',          label: 'Имя (кит)' },
+  { key: 'specialization_code',    label: 'Код специализации' },
+  { key: 'specialization_name',    label: 'Название специализации' },
+  { key: 'email',                  label: 'Email' },
+  { key: 'password',               label: 'Пароль' },
+  { key: 'snils',                  label: 'СНИЛС' },
+  { key: 'passport_number',        label: 'Номер паспорта' },
+  { key: 'passport_expiry',        label: 'Срок паспорта' },
+  { key: 'passport_issued_by',     label: 'Кем выдан' },
+  { key: 'education_type',         label: 'Тип образования' },
+  { key: 'doc1_number',            label: 'Документ 1' },
+  { key: 'doc2_number',            label: 'Документ 2' },
+  { key: 'partner',                label: 'Партнёр' },
+];
+
+async function loadApplicants() {
+  try {
+    applicants = await apiGet('/api/applicants');
+    renderTable();
+  } catch (e) {
+    showToast('Ошибка загрузки данных', 'error');
+    document.getElementById('table-wrapper').innerHTML = '<div class="loading">Ошибка загрузки</div>';
+  }
+}
+
+function renderTable() {
+  const wrapper = document.getElementById('table-wrapper');
+  let rows = [...applicants];
+
+  if (sortCol) {
+    rows.sort((a, b) => {
+      const av = (a[sortCol] || '').toString();
+      const bv = (b[sortCol] || '').toString();
+      return av.localeCompare(bv, 'ru') * sortDir;
+    });
+  }
+
+  const thead = `<thead><tr>
+    ${columns.map(c => `<th class="sortable" onclick="setSort('${c.key}')" data-col="${c.key}">
+      ${c.label}${sortCol === c.key ? (sortDir === 1 ? ' ↑' : ' ↓') : ''}
+    </th>`).join('')}
+    <th>Действия</th>
+  </tr></thead>`;
+
+  const tbody = rows.length === 0
+    ? `<tbody><tr class="empty-row"><td colspan="${columns.length + 1}">Нет данных. Добавьте первого абитуриента.</td></tr></tbody>`
+    : `<tbody>${rows.map(a => `
+      <tr onclick="navigate('/applicant/${a.id}')">
+        ${columns.map(c => `<td title="${a[c.key] || ''}">${a[c.key] || '—'}</td>`).join('')}
+        <td class="action-cell" onclick="event.stopPropagation()">
+          <button class="btn btn-sm btn-secondary" onclick="navigate('/applicant/${a.id}')">Открыть</button>
+          <button class="btn btn-sm btn-danger" onclick="deleteApplicant(${a.id})">Удалить</button>
+        </td>
+      </tr>`).join('')}
+    </tbody>`;
+
+  wrapper.innerHTML = `<table>${thead}${tbody}</table>`;
+}
+
+function setSort(col) {
+  if (sortCol === col) sortDir *= -1;
+  else { sortCol = col; sortDir = 1; }
+  renderTable();
+}
+
+async function addApplicant() {
+  try {
+    const res = await apiPost('/api/applicants', {});
+    showToast('Абитуриент создан', 'success');
+    navigate(`/applicant/${res.id}`);
+  } catch (e) {
+    showToast('Ошибка создания', 'error');
+  }
+}
+
+async function deleteApplicant(id) {
+  if (!confirm('Удалить этого абитуриента?')) return;
+  try {
+    await apiDelete(`/api/applicants/${id}`);
+    showToast('Удалено', 'success');
+    loadApplicants();
+  } catch (e) {
+    showToast('Ошибка удаления', 'error');
+  }
+}
+
+function exportExcel() {
+  window.location.href = '/api/export/applicants';
+  showToast('Скачивание Excel...', 'info');
+}
+
+loadApplicants();
+</script>
+</body>
+</html>

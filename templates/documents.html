@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>Загрузка сканов документов</title>
+  <link rel="stylesheet" href="/static/css/style.css">
+  <style>
+    .docs-page { max-width: 1300px; margin: 0 auto; }
+    .lang-tabs {
+      display: flex;
+      gap: 4px;
+      margin-bottom: 20px;
+    }
+    .lang-tab {
+      padding: 7px 18px;
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+      cursor: pointer;
+      font-size: 13px;
+      font-weight: 500;
+      background: var(--surface);
+      transition: background var(--transition), color var(--transition);
+    }
+    .lang-tab.active {
+      background: var(--accent);
+      color: #fff;
+      border-color: var(--accent);
+    }
+    .docs-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 16px;
+    }
+    .doc-col { display: flex; flex-direction: column; gap: 8px; }
+    .doc-col-title {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      color: #fff;
+      background: var(--accent);
+      padding: 6px 8px;
+      border-radius: var(--radius);
+      text-align: center;
+    }
+    .scan-area {
+      border: 2px dashed var(--border);
+      border-radius: var(--radius);
+      min-height: 180px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: border-color var(--transition), background var(--transition);
+      overflow: hidden;
+      position: relative;
+      background: var(--surface2);
+    }
+    .scan-area:hover { border-color: var(--accent); background: #eff6ff; }
+    .scan-area img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .scan-area .scan-icon {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      color: var(--text-muted);
+      font-size: 11px;
+      text-align: center;
+      padding: 10px;
+      z-index: 1;
+    }
+    .scan-area .scan-icon svg { width: 28px; height: 28px; color: #c5cad2; }
+    .scan-area.has-file .scan-icon { display: none; }
+    .doc-fields { display: flex; flex-direction: column; gap: 6px; }
+    .doc-fields input {
+      padding: 5px 8px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      font-size: 12px;
+      font-family: var(--font);
+      background: var(--surface);
+      color: var(--text);
+      width: 100%;
+      transition: border-color var(--transition);
+    }
+    .doc-fields input:focus {
+      outline: none;
+      border-color: var(--border-focus);
+    }
+    .doc-fields input::placeholder { color: #adb5bd; }
+    .save-bar {
+      display: flex;
+      justify-content: flex-end;
+      gap: 10px;
+      margin-top: 20px;
+      padding-top: 16px;
+      border-top: 1px solid var(--border);
+    }
+  </style>
+</head>
+<body>
+<div class="app-wrapper">
+  <div class="topbar">
+    <a class="topbar-back" id="back-btn" href="#">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
+      Страница абитуриента
+    </a>
+    <span class="topbar-title">Загрузка сканов документов</span>
+  </div>
+  <div class="page-content">
+    <div id="loading" class="loading"><div class="spinner"></div>Загрузка...</div>
+    <div id="content" style="display:none" class="docs-page">
+      <div class="lang-tabs">
+        <div class="lang-tab active" onclick="switchLang('ru', this)">На русском языке</div>
+        <div class="lang-tab" onclick="switchLang('cn', this)">На китайском языке</div>
+      </div>
+
+      <div id="docs-ru" class="docs-grid"></div>
+      <div id="docs-cn" class="docs-grid" style="display:none"></div>
+
+      <div class="save-bar">
+        <button class="btn btn-secondary" id="cancel-btn">Отмена</button>
+        <button class="btn btn-primary" onclick="saveAll()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 01-2-2V5a2 2 0 012-2h11l5 5v11a2 2 0 01-2 2zM17 21v-8H7v8M7 3v5h8"/></svg>
+          Сохранить все данные
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+<div id="toast-container" class="toast-container"></div>
+<script src="/static/js/utils.js"></script>
+<script>
+const APPLICANT_ID = {{ applicant_id }};
+document.getElementById('back-btn').href = `/applicant/${APPLICANT_ID}`;
+document.getElementById('cancel-btn').onclick = () => navigate(`/applicant/${APPLICANT_ID}`);
+
+const DOC_TYPES = [
+  {
+    key: 'passport',
+    label: 'Паспорт',
+    fields: [
+      { key: 'number', label: 'Номер' },
+      { key: 'issued_date', label: 'Когда выдан', type: 'date' },
+      { key: 'issued_by', label: 'Кем выдан' },
+      { key: 'issue_place', label: 'Место выдачи' },
+      { key: 'birth_province', label: 'Провинция рождения' },
+    ]
+  },
+  {
+    key: 'snils',
+    label: 'СНИЛС',
+    fields: [
+      { key: 'number', label: 'Номер' },
+    ]
+  },
+  {
+    key: 'diploma',
+    label: 'Аттестат (школа) / Диплом (ВУЗ)',
+    fields: [
+      { key: 'number', label: 'Номер' },
+      { key: 'institution_name', label: 'Название учебного заведения' },
+      { key: 'issue_date', label: 'Дата выдачи', type: 'date' },
+    ]
+  },
+  {
+    key: 'transcript',
+    label: 'Свидетельство об оценках (школа) / Диплом бакалавра (ВУЗ)',
+    fields: [
+      { key: 'number', label: 'Номер' },
+      { key: 'institution_name', label: 'Название учебного заведения' },
+      { key: 'issue_date', label: 'Дата выдачи', type: 'date' },
+    ]
+  },
+  {
+    key: 'grade_table',
+    label: 'Табель успеваемости (ВУЗ)',
+    fields: [
+      { key: 'number', label: 'Номер' },
+      { key: 'institution_name', label: 'Название учебного заведения' },
+      { key: 'issue_date', label: 'Дата выдачи', type: 'date' },
+    ]
+  },
+];
+
+let docsData = { ru: {}, cn: {} };
+
+function switchLang(lang, tabEl) {
+  document.querySelectorAll('.lang-tab').forEach(t => t.classList.remove('active'));
+  tabEl.classList.add('active');
+  document.getElementById('docs-ru').style.display = lang === 'ru' ? 'grid' : 'none';
+  document.getElementById('docs-cn').style.display = lang === 'cn' ? 'grid' : 'none';
+}
+
+function buildDocCol(docType, lang, data) {
+  const col = document.createElement('div');
+  col.className = 'doc-col';
+  col.id = `col-${docType.key}-${lang}`;
+
+  const title = document.createElement('div');
+  title.className = 'doc-col-title';
+  title.textContent = docType.label;
+  col.appendChild(title);
+
+  // Scan area
+  const scanArea = document.createElement('div');
+  scanArea.className = 'scan-area';
+  scanArea.id = `scan-${docType.key}-${lang}`;
+
+  if (data && data.scan_path) {
+    const img = document.createElement('img');
+    img.src = `/uploads/${data.scan_path}`;
+    scanArea.appendChild(img);
+    scanArea.classList.add('has-file');
+  } else {
+    const icon = document.createElement('div');
+    icon.className = 'scan-icon';
+    icon.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8zM14 2v6h6"/></svg><span>Нажмите для загрузки</span>`;
+    scanArea.appendChild(icon);
+  }
+
+  const fileInput = document.createElement('input');
+  fileInput.type = 'file';
+  fileInput.accept = 'image/*,.pdf';
+  fileInput.id = `file-${docType.key}-${lang}`;
+  fileInput.style.display = 'none';
+  fileInput.addEventListener('change', () => uploadScan(docType.key, lang, fileInput));
+  col.appendChild(fileInput);
+
+  scanArea.addEventListener('click', () => fileInput.click());
+  col.appendChild(scanArea);
+
+  // Fields
+  const fieldsDiv = document.createElement('div');
+  fieldsDiv.className = 'doc-fields';
+  docType.fields.forEach(f => {
+    const inp = document.createElement('input');
+    inp.type = f.type || 'text';
+    inp.placeholder = f.label;
+    inp.id = `field-${docType.key}-${lang}-${f.key}`;
+    if (data && data[f.key]) inp.value = data[f.key];
+    fieldsDiv.appendChild(inp);
+  });
+  col.appendChild(fieldsDiv);
+
+  return col;
+}
+
+async function uploadScan(docKey, lang, input) {
+  if (!input.files[0]) return;
+  const fd = new FormData();
+  fd.append('applicant_id', APPLICANT_ID);
+  fd.append('doc_type', docKey);
+  fd.append('lang', lang);
+  fd.append('file', input.files[0]);
+  try {
+    const res = await uploadFile('/api/upload/document', fd);
+    const scanArea = document.getElementById(`scan-${docKey}-${lang}`);
+    scanArea.innerHTML = '';
+    const img = document.createElement('img');
+    img.src = res.url;
+    scanArea.appendChild(img);
+    scanArea.classList.add('has-file');
+    showToast('Скан загружен', 'success');
+  } catch (e) {
+    showToast('Ошибка загрузки скана', 'error');
+  }
+}
+
+async function saveAll() {
+  const langs = ['ru', 'cn'];
+  try {
+    for (const lang of langs) {
+      for (const dt of DOC_TYPES) {
+        const fieldData = { lang };
+        dt.fields.forEach(f => {
+          const el = document.getElementById(`field-${dt.key}-${lang}-${f.key}`);
+          if (el && el.value) fieldData[f.key] = el.value;
+        });
+        await apiPut(`/api/documents/${APPLICANT_ID}/${dt.key}`, fieldData);
+      }
+    }
+    showToast('Все данные сохранены', 'success');
+    setTimeout(() => navigate(`/applicant/${APPLICANT_ID}`), 800);
+  } catch (e) {
+    showToast('Ошибка сохранения', 'error');
+  }
+}
+
+async function loadPage() {
+  try {
+    // Load existing document data
+    for (const lang of ['ru', 'cn']) {
+      docsData[lang] = {};
+      for (const dt of DOC_TYPES) {
+        const rows = await apiGet(`/api/documents/${APPLICANT_ID}/${dt.key}`);
+        const row = rows.find(r => r.lang === lang);
+        if (row) docsData[lang][dt.key] = row;
+      }
+    }
+
+    // Build columns
+    for (const lang of ['ru', 'cn']) {
+      const container = document.getElementById(`docs-${lang}`);
+      DOC_TYPES.forEach(dt => {
+        const col = buildDocCol(dt, lang, docsData[lang][dt.key] || null);
+        container.appendChild(col);
+      });
+    }
+
+    document.getElementById('loading').style.display = 'none';
+    document.getElementById('content').style.display = 'block';
+  } catch (e) {
+    showToast('Ошибка загрузки', 'error');
+  }
+}
+
+loadPage();
+</script>
+</body>
+</html>
