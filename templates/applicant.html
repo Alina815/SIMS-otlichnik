@@ -20,19 +20,6 @@
     }
     .right-panel { flex: 1; }
     .fields-section { margin-bottom: 24px; }
-    .bilingual-cols {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 24px;
-    }
-    .col-header {
-      font-size: 13px;
-      font-weight: 600;
-      color: var(--text-muted);
-      padding-bottom: 10px;
-      border-bottom: 2px solid var(--accent);
-      margin-bottom: 14px;
-    }
     .field-row {
       display: flex;
       flex-direction: column;
@@ -51,6 +38,27 @@
     .field-value.empty { color: var(--text-muted); font-style: italic; }
     .action-buttons { display: flex; flex-direction: column; gap: 10px; width: 180px; }
     .action-buttons .btn { width: 100%; justify-content: center; }
+    .delete-btn {margin-top: 16 px;};
+     .radio-group {
+      display: flex;
+      gap: 16px;
+      align-items: center;
+      padding: 7px 10px;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      min-height: 34px;
+    }
+    .radio-group label {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      cursor: pointer;
+    }
+    .radio-group input {
+      margin: 5px;
+      cursor: pointer;
+    }
   </style>
 </head>
 <body>
@@ -90,32 +98,43 @@
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8zM14 2v6h6M16 13H8M16 17H8M10 9H8"/></svg>
               Загрузить сканы документов
             </button>
+            <button class="btn btn-danger delete-btn" id="delete-btn">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 7h16M10 11v6M14 11v6M5 7l1 13a2 2 0 002 2h8a2 2 0 002-2l1-13M9 7V4a1 1 0 011-1h4a1 1 0 011 1v3"/></svg>
+              Удалить абитуриента
+            </button>
           </div>
         </div>
 
         <div class="right-panel">
-          <div class="bilingual-cols">
-            <div>
-              <div class="col-header">На русском языке</div>
-              <div class="field-row"><label class="form-label">Имя</label><div class="field-value" id="ru-first-name">—</div></div>
-              <div class="field-row"><label class="form-label">Фамилия</label><div class="field-value" id="ru-last-name">—</div></div>
+          <div class="fields-section">
+            <div class="section-header">Основные данные</div>
+            <div class="form-grid">
+              <div class="field-row"><label class="form-label">Имя на русском</label><div class="field-value" id="ru-first-name">—</div></div>
+              <div class="field-row"><label class="form-label">Имя на китайском</label><div class="field-value" id="ru-first-name">—</div></div>
+              <div class="field-row"><label class="form-label">Фамилия на русском</label><div class="field-value" id="cn-last-name">—</div></div>
+              <div class="field-row"><label class="form-label">Фамилия на китайском</label><div class="field-value" id="cn-last-name">—</div></div>
               <div class="field-row"><label class="form-label">Email</label><div class="field-value" id="email">—</div></div>
               <div class="field-row"><label class="form-label">Пароль</label><div class="field-value" id="password">—</div></div>
               <div class="field-row"><label class="form-label">Код специализации</label><div class="field-value" id="spec-code">—</div></div>
               <div class="field-row"><label class="form-label">Название специализации</label><div class="field-value" id="spec-name">—</div></div>
-            </div>
-            <div>
-              <div class="col-header">На китайском языке</div>
-              <div class="field-row"><label class="form-label">Имя</label><div class="field-value" id="cn-first-name">—</div></div>
-              <div class="field-row"><label class="form-label">Фамилия</label><div class="field-value" id="cn-last-name">—</div></div>
-              <div class="field-row"><label class="form-label">Email</label><div class="field-value" id="cn-email">—</div></div>
-              <div class="field-row"><label class="form-label">Пароль</label><div class="field-value" id="cn-password">—</div></div>
-              <div class="field-row"><label class="form-label">Код специализации</label><div class="field-value" id="cn-spec-code">—</div></div>
-              <div class="field-row"><label class="form-label">Название специализации</label><div class="field-value" id="cn-spec-name">—</div></div>
-            </div>
+              <div class="field-row">
+                <label class="form-label">Пол</label>
+                <div class="radio-group" id="gender-group">
+                  <label><input type="radio" name="gender" value="male" disabled>Мужской</label>
+                  <label><input type="radio" name="gender" value="female" disabled>Женский</label>
+                </div>
+              </div>
+              <div class="field-row">
+                <label class="form-label">Тип образования</label>
+                <div class="radio-group" id="education-group">
+                  <label><input type="radio" name="education" value="bachelor" disabled>Бакалавр</label>
+                  <label><input type="radio" name="education" value="master" disabled>Магистр</label>
+                </div>
+              </div>
           </div>
 
           <div class="divider"></div>
+
           <div class="fields-section">
             <div class="section-header">Дополнительные данные</div>
             <div class="form-grid">
@@ -123,7 +142,14 @@
               <div class="field-row"><label class="form-label">Номер паспорта</label><div class="field-value" id="passport-number">—</div></div>
               <div class="field-row"><label class="form-label">Срок действия паспорта</label><div class="field-value" id="passport-expiry">—</div></div>
               <div class="field-row"><label class="form-label">Кем выдан паспорт</label><div class="field-value" id="passport-issued">—</div></div>
-              <div class="field-row"><label class="form-label">Тип образования</label><div class="field-value" id="edu-type">—</div></div>
+              <div class="field-row" id="doc1-row">
+                <label class="form-label" id="doc1-label">Номер документа 1</label>
+                <div class="field-value" id="doc1-number">—</div>
+              </div>
+              <div class="field-row" id="doc2-row">
+                <label class="form-label" id="doc2-label">Номер документа 2</label>
+                <div class="field-value" id="doc2-number">—</div>
+              </div>
               <div class="field-row"><label class="form-label">Партнёр</label><div class="field-value" id="partner">—</div></div>
             </div>
           </div>
@@ -135,7 +161,7 @@
 <div id="toast-container" class="toast-container"></div>
 <script src="/static/js/utils.js"></script>
 <script>
-const APPLICANT_ID = {{ applicant_id }};
+const APPLICANT_ID = 1;
 let applicantData = null;
 
 function setField(id, val) {
@@ -150,6 +176,39 @@ function setField(id, val) {
   }
 }
 
+function setRadioValue(groupId, value) {
+  const radios = document.querySelectorAll(`#${groupId} input[type="radio"]`);
+  radios.forEach(radio => {
+    radio.checked = (radio.value === value);
+  });
+}
+
+function updateDocumentLabels(studyType) {
+  const doc1Label = document.getElementById('doc1-label');
+  const doc2Label = document.getElementById('doc2-label');
+  const doc1Row = document.getElementById('doc1-row');
+  const doc2Row = document.getElementById('doc2-row');
+  
+  if (!doc1Label || !doc2Label) return;
+  
+  if (studyType === 'bachelor') {
+    doc1Label.textContent = 'Аттестат / Справка с места учёбы';
+    doc2Label.textContent = 'Свидетельство об оценках';
+    doc1Row?.classList.add('highlight');
+    doc2Row?.classList.add('highlight');
+  } else if (studyType === 'master') {
+    doc1Label.textContent = 'Диплом';
+    doc2Label.textContent = 'Диплом бакалавра';
+    doc1Row?.classList.add('highlight');
+    doc2Row?.classList.add('highlight');
+  } else {
+    doc1Label.textContent = 'Номер документа 1';
+    doc2Label.textContent = 'Номер документа 2';
+    doc1Row?.classList.remove('highlight');
+    doc2Row?.classList.remove('highlight');
+  }
+}
+
 async function loadApplicant() {
   try {
     applicantData = await apiGet(`/api/applicants/${APPLICANT_ID}`);
@@ -159,25 +218,29 @@ async function loadApplicant() {
       `${a.last_name_ru || ''} ${a.first_name_ru || ''}`.trim() || 'Абитуриент';
 
     setField('ru-first-name', a.first_name_ru);
+    setField('cn-first-name', a.first_name_cn);
     setField('ru-last-name', a.last_name_ru);
+    setField('cn-last-name', a.last_name_cn);
     setField('email', a.email);
     setField('password', a.password);
     setField('spec-code', a.specialization_code);
     setField('spec-name', a.specialization_name);
 
-    setField('cn-first-name', a.first_name_cn);
-    setField('cn-last-name', a.last_name_cn);
-    setField('cn-email', a.email);
-    setField('cn-password', a.password);
-    setField('cn-spec-code', a.specialization_code);
-    setField('cn-spec-name', a.specialization_name);
+    if (a.gender) setRadioValue('gender-group', a.gender);
+    if (a.edu_type) {
+      setRadioValue('edu-type', a.edu_type);
+      updateDocumentLabels(a.edu_type);
+    } else {
+      updateDocumentLabels(null);
+    }
 
     setField('snils', a.snils);
     setField('passport-number', a.passport_number);
     setField('passport-expiry', a.passport_expiry);
     setField('passport-issued', a.passport_issued_by);
-    setField('edu-type', a.education_type);
     setField('partner', a.partner);
+    setField('doc1-number', a.doc1_number);
+    setField('doc2-number', a.doc2_number);
 
     if (a.photo_path) {
       const container = document.getElementById('photo-container');

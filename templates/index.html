@@ -12,18 +12,28 @@
       margin-bottom: 16px;
     }
     .page-header h1 { font-size: 18px; font-weight: 700; }
-    .table-container { height: calc(100vh - 120px); }
-    .table-wrapper { height: 100%; }
+    .table-wrapper { height: calc(100vh - 120px); }
     .action-cell { display: flex; gap: 6px; }
     td.action-cell { max-width: none; }
   </style>
 </head>
 <body>
 <div class="app-wrapper">
-  <div class="topbar">
-    <span class="topbar-title">📋 Система учёта абитуриентов</span>
-  </div>
   <div class="page-content">
+    <div class="table-controls">
+      <div class="filter-tabs">
+        <button class="filter-tab active" data-filter="all">Все абитуриенты</button>
+        <button class="filter-tab" data-filter="bachelor">Бакалавры</button>
+        <button class="filter-tab" data-filter="master">Магистры</button>
+      </div>
+      <div class="search-box">
+        <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="10" cy="10" r="7"/>
+          <line x1="15" y1="15" x2="21" y2="21"/>
+        </svg>
+        <input type="text" id="searchInput" placeholder="Поиск по фамилии, имени, email" class="search-input">
+      </div>
+    </div>
     <div class="page-header">
       <h1>Общая таблица</h1>
       <div class="btn-toolbar">
@@ -37,12 +47,9 @@
         </button>
       </div>
     </div>
-
-    <div class="table-container">
       <div class="table-wrapper" id="table-wrapper">
         <div class="loading"><div class="spinner"></div>Загрузка...</div>
       </div>
-    </div>
   </div>
 </div>
 
@@ -50,6 +57,9 @@
 
 <script src="/static/js/utils.js"></script>
 <script>
+let currentFilter = 'all';  // 'all', 'bachelor', 'master'
+let searchQuery = '';
+
 let applicants = [];
 let sortCol = null, sortDir = 1;
 
@@ -58,6 +68,8 @@ const columns = [
   { key: 'first_name_ru',          label: 'Имя (рус)' },
   { key: 'last_name_cn',           label: 'Фамилия (кит)' },
   { key: 'first_name_cn',          label: 'Имя (кит)' },
+  { key: 'gender',                 label: 'Пол' },
+  { key: 'education',         label: 'Образование' },
   { key: 'specialization_code',    label: 'Код специализации' },
   { key: 'specialization_name',    label: 'Название специализации' },
   { key: 'email',                  label: 'Email' },
@@ -66,7 +78,6 @@ const columns = [
   { key: 'passport_number',        label: 'Номер паспорта' },
   { key: 'passport_expiry',        label: 'Срок паспорта' },
   { key: 'passport_issued_by',     label: 'Кем выдан' },
-  { key: 'education_type',         label: 'Тип образования' },
   { key: 'doc1_number',            label: 'Документ 1' },
   { key: 'doc2_number',            label: 'Документ 2' },
   { key: 'partner',                label: 'Партнёр' },
@@ -82,10 +93,30 @@ async function loadApplicants() {
   }
 }
 
+function filterApplicants(applicants) {
+  let filtered = [...applicants];
+  if (currentFilter == 'bachelor') {
+    filtered = filtered.filter(a => a.education == 'Бакалавр');
+  } else if (currentFilter == 'master') {
+    filtered = filtered.filter(a => a.education == 'Магистр');
+  }
+  if (searchQuery.trim()) {
+    const query = searchQuery.toLowerCase().trim();
+    filtered = filtered.filter(a => (
+      (a.last_name_ru && a.last_name_ru.toLowerCase().includes(query)) ||
+      (a.last_name_cn && a.last_name_cn.toLowerCase().includes(query)) ||
+      (a.first_name_ru && a.first_name_ru.toLowerCase().includes(query)) ||
+      (a.first_name_cn && a.first_name_cn.toLowerCase().includes(query)) ||
+      (a.email && a.email.toLowerCase().includes(query))
+    ));
+  }
+  return filtered;
+}
+
 function renderTable() {
   const wrapper = document.getElementById('table-wrapper');
-  let rows = [...applicants];
-
+  let filtered = filterApplicants(applicants);
+  let rows = [...filtered];
   if (sortCol) {
     rows.sort((a, b) => {
       const av = (a[sortCol] || '').toString();
@@ -102,7 +133,7 @@ function renderTable() {
   </tr></thead>`;
 
   const tbody = rows.length === 0
-    ? `<tbody><tr class="empty-row"><td colspan="${columns.length + 1}">Нет данных. Добавьте первого абитуриента.</td></tr></tbody>`
+    ? `<tbody><tr class="empty-row"><td colspan="${columns.length + 1}">Данные не найдены.</td></tr></tbody>`
     : `<tbody>${rows.map(a => `
       <tr onclick="navigate('/applicant/${a.id}')">
         ${columns.map(c => `<td title="${a[c.key] || ''}">${a[c.key] || '—'}</td>`).join('')}
@@ -114,6 +145,27 @@ function renderTable() {
     </tbody>`;
 
   wrapper.innerHTML = `<table>${thead}${tbody}</table>`;
+}
+
+function initFilters() {
+  const tabs = document.querySelectorAll('.filter-tab');
+  if (tabs.length) {
+    tabs.forEach(tab => {
+      tab.addEventListener('click', () => {
+        tabs.forEach(tab => tab.classList.remove('active'));
+        tab.classList.add('active');
+        currentFilter = tab.dataset.filter;
+        renderTable();
+      });
+    });
+  }
+  const searchInput = document.getElementById('searchInput');
+  if (searchInput) {
+    searchInput.addEventListener('input', (e) => {
+      searchQuery = e.target.value;
+      renderTable();
+    });
+  }
 }
 
 function setSort(col) {
@@ -149,6 +201,7 @@ function exportExcel() {
 }
 
 loadApplicants();
+initFilters();
 </script>
 </body>
 </html>

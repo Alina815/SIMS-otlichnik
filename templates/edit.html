@@ -59,12 +59,11 @@
                 </div>
                 <div class="form-group">
                   <label class="form-label">Код специализации</label>
-                  <select class="form-control" id="spec_code"></select>
+                  <input class="form-control" id="spec_code"></input>
                 </div>
                 <div class="form-group">
                   <label class="form-label">Название специализации</label>
-                  <select class="form-control" id="spec_name"></select>
-                  <div class="spec-note">Код и название заполняются автоматически по выбору</div>
+                  <input class="form-control" id="spec_name"></input>
                 </div>
               </div>
             </div>
@@ -156,7 +155,7 @@
 <div id="toast-container" class="toast-container"></div>
 <script src="/static/js/utils.js"></script>
 <script>
-const APPLICANT_ID = {{ applicant_id }};
+const APPLICANT_ID = 1;
 
 document.getElementById('back-btn').href = `/applicant/${APPLICANT_ID}`;
 document.getElementById('cancel-btn').onclick = () => navigate(`/applicant/${APPLICANT_ID}`);
