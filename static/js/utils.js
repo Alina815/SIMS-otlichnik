@@ -1,4 +1,4 @@
-const USE_MOCK = true;
+const USE_MOCK = false;
 const API_URL = '';
 
 const MOCK_APPLICANTS = [
@@ -21,7 +21,7 @@ const MOCK_APPLICANTS = [
     partner: 'ООО "Рога и копыта"',
     doc1_number: 'АБ 1234567',
     doc2_number: '107824 0123456789',
-    photo_path: 'photos/photo_1.jpg'
+    photo_path: 'photos/3.jpg'
   },
   {
     id: 2,
@@ -229,43 +229,3 @@ function navigate(path) {
 
 // ─── Specialization helpers ───────────────────────────────────────────────────
 let _specs = null;
-
-async function loadSpecializations() {
-  if (_specs) return _specs;
-  _specs = await apiGet('/api/specializations');
-  return _specs;
-}
-
-async function populateSpecSelects(codeSelect, nameSelect) {
-  const specs = await loadSpecializations();
-  const addOptions = (sel) => {
-    sel.innerHTML = '<option value="">— выбрать —</option>';
-    specs.forEach(s => {
-      const o = document.createElement('option');
-      o.value = s.code;
-      o.textContent = sel === s.code;
-      o.dataset.code = s.code;
-      o.dataset.name = s.name;
-      sel.appendChild(o);
-    });
-  };
-  addOptions(codeSelect);
-  // For name select, use name as value too
-  nameSelect.innerHTML = '<option value="">— выбрать —</option>';
-  specs.forEach(s => {
-    const o = document.createElement('option');
-    o.value = s.code;
-    o.textContent = s.name;
-    o.dataset.code = s.code;
-    o.dataset.name = s.name;
-    nameSelect.appendChild(o);
-  });
-
-  // Sync: picking code sets name, picking name sets code
-  codeSelect.addEventListener('change', () => {
-    nameSelect.value = codeSelect.value;
-  });
-  nameSelect.addEventListener('change', () => {
-    codeSelect.value = nameSelect.value;
-  });
-}

@@ -27,7 +27,7 @@
   <div class="topbar">
     <a class="topbar-back" id="back-btn" href="#">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
-      Страница абитуриента
+      Назад к странице абитуриента
     </a>
     <span class="topbar-title">Редактирование персональных данных</span>
   </div>
@@ -35,72 +35,61 @@
     <div id="loading" class="loading"><div class="spinner"></div>Загрузка...</div>
     <div id="content" style="display:none" class="edit-layout">
       <div class="card">
-        <div class="card-body">
-          <div class="cols-2">
-            <!-- Русский -->
-            <div>
-              <div class="section-header">На русском языке</div>
-              <div class="form-grid single">
-                <div class="form-group">
-                  <label class="form-label">Имя</label>
-                  <input class="form-control" id="first_name_ru" type="text" placeholder="Имя">
-                </div>
-                <div class="form-group">
-                  <label class="form-label">Фамилия</label>
-                  <input class="form-control" id="last_name_ru" type="text" placeholder="Фамилия">
-                </div>
-                <div class="form-group">
-                  <label class="form-label">Электронная почта</label>
-                  <input class="form-control" id="email" type="email" placeholder="example@mail.ru">
-                </div>
-                <div class="form-group">
-                  <label class="form-label">Пароль</label>
-                  <input class="form-control" id="password" type="text" placeholder="Пароль">
-                </div>
-                <div class="form-group">
-                  <label class="form-label">Код специализации</label>
-                  <input class="form-control" id="spec_code"></input>
-                </div>
-                <div class="form-group">
-                  <label class="form-label">Название специализации</label>
-                  <input class="form-control" id="spec_name"></input>
-                </div>
+        <div class="fields-section">
+          <div class="section-header">Основные данные</div>
+          <div class="form-grid">
+            <div class="form-group">
+              <label class="form-label">Имя на русском</label>
+              <input class="form-control" id="first_name_ru" type="text" placeholder="Имя">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Имя на китайском</label>
+              <input class="form-control" id="first_name_cn" type="text" placeholder="名">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Фамилия на русском</label>
+              <input class="form-control" id="last_name_ru" type="text" placeholder="Фамилия">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Фамилия на китайском</label>
+              <input class="form-control" id="last_name_cn" type="text" placeholder="姓">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Email</label>
+              <input class="form-control" id="email" type="email" placeholder="example@mail.ru">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Пароль</label>
+              <input class="form-control" id="password" type="text" placeholder="Пароль">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Код специализации</label>
+              <input class="form-control" id="spec_code" type="text" placeholder="Код">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Название специализации</label>
+              <input class="form-control" id="spec_name" type="text" placeholder="Название">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Пол</label>
+              <div class="radio-group" id="gender-group">
+                <label><input type="radio" name="gender" value="male"> Мужчина</label>
+                <label><input type="radio" name="gender" value="female"> Женщина</label>
               </div>
             </div>
-            <!-- Китайский -->
-            <div>
-              <div class="section-header">На китайском языке</div>
-              <div class="form-grid single">
-                <div class="form-group">
-                  <label class="form-label">Имя</label>
-                  <input class="form-control" id="first_name_cn" type="text" placeholder="名">
-                </div>
-                <div class="form-group">
-                  <label class="form-label">Фамилия</label>
-                  <input class="form-control" id="last_name_cn" type="text" placeholder="姓">
-                </div>
-                <div class="form-group">
-                  <label class="form-label">Электронная почта</label>
-                  <input class="form-control" id="email_cn" type="email" placeholder="example@mail.cn">
-                </div>
-                <div class="form-group">
-                  <label class="form-label">Пароль</label>
-                  <input class="form-control" id="password_cn" type="text" placeholder="密码">
-                </div>
-                <div class="form-group">
-                  <label class="form-label">Код специализации</label>
-                  <select class="form-control" id="spec_code_cn"></select>
-                </div>
-                <div class="form-group">
-                  <label class="form-label">Название специализации</label>
-                  <select class="form-control" id="spec_name_cn"></select>
-                </div>
+            <div class="form-group">
+              <label class="form-label">Образование</label>
+              <div class="radio-group" id="education-group">
+                <label><input type="radio" name="education" value="bachelor"> Бакалавр</label>
+                <label><input type="radio" name="education" value="master"> Магистр</label>
               </div>
             </div>
           </div>
+        </div>
 
-          <div class="divider"></div>
+        <div class="divider"></div>
 
+        <div class="fields-section">
           <div class="section-header">Дополнительные данные</div>
           <div class="form-grid">
             <div class="form-group">
@@ -120,34 +109,19 @@
               <input class="form-control" id="passport_issued_by" type="text" placeholder="Наименование органа">
             </div>
             <div class="form-group">
-              <label class="form-label">Тип образования</label>
-              <select class="form-control" id="education_type">
-                <option value="после школы">После школы</option>
-                <option value="после ВУЗа">После ВУЗа</option>
-              </select>
-            </div>
-            <div class="form-group">
               <label class="form-label">Партнёр</label>
               <input class="form-control" id="partner" type="text" placeholder="Организация-партнёр">
             </div>
-            <div class="form-group">
-              <label class="form-label">Номер документа 1</label>
-              <input class="form-control" id="doc1_number" type="text" placeholder="Номер">
-            </div>
-            <div class="form-group">
-              <label class="form-label">Номер документа 2</label>
-              <input class="form-control" id="doc2_number" type="text" placeholder="Номер">
-            </div>
-          </div>
-
-          <div class="save-bar">
-            <button class="btn btn-secondary" id="cancel-btn">Отмена</button>
-            <button class="btn btn-primary" onclick="saveData()">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 01-2-2V5a2 2 0 012-2h11l5 5v11a2 2 0 01-2 2zM17 21v-8H7v8M7 3v5h8"/></svg>
-              Сохранить изменения
-            </button>
           </div>
         </div>
+
+        <div class="save-bar">
+          <button class="btn btn-secondary" id="cancel-btn">Отмена</button>
+          <button class="btn btn-primary" onclick="saveData()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 01-2-2V5a2 2 0 012-2h11l5 5v11a2 2 0 01-2 2zM17 21v-8H7v8M7 3v5h8"/></svg>
+            Сохранить изменения
+          </button>
+        </div>         
       </div>
     </div>
   </div>
@@ -155,41 +129,36 @@
 <div id="toast-container" class="toast-container"></div>
 <script src="/static/js/utils.js"></script>
 <script>
-const APPLICANT_ID = 1;
+const APPLICANT_ID = {{applicant_id}};
 
 document.getElementById('back-btn').href = `/applicant/${APPLICANT_ID}`;
 document.getElementById('cancel-btn').onclick = () => navigate(`/applicant/${APPLICANT_ID}`);
 
 async function loadData() {
   try {
-    const [a] = await Promise.all([
-      apiGet(`/api/applicants/${APPLICANT_ID}`),
-    ]);
+    const a = await apiGet(`/api/applicants/${APPLICANT_ID}`);
 
-    await Promise.all([
-      populateSpecSelects(document.getElementById('spec_code'), document.getElementById('spec_name')),
-      populateSpecSelects(document.getElementById('spec_code_cn'), document.getElementById('spec_name_cn')),
-    ]);
+    document.getElementById('first_name_ru').value = a.first_name_ru || '';
+    document.getElementById('last_name_ru').value = a.last_name_ru || '';
+    document.getElementById('first_name_cn').value = a.first_name_cn || '';
+    document.getElementById('last_name_cn').value = a.last_name_cn || '';
+    document.getElementById('email').value = a.email || '';
+    document.getElementById('password').value = a.password || '';
+    document.getElementById('spec_code').value = a.specialization_code || '';
+    document.getElementById('spec_name').value = a.specialization_name || '';
+    document.getElementById('snils').value = a.snils || '';
+    document.getElementById('passport_number').value = a.passport_number || '';
+    document.getElementById('passport_expiry').value = a.passport_expiry || '';
+    document.getElementById('passport_issued_by').value = a.passport_issued_by || '';
+    document.getElementById('partner').value = a.partner || '';
 
-    const fields = ['first_name_ru','last_name_ru','email','password',
-                    'first_name_cn','last_name_cn','snils','passport_number',
-                    'passport_expiry','passport_issued_by','partner',
-                    'doc1_number','doc2_number'];
-    fields.forEach(f => {
-      const el = document.getElementById(f);
-      if (el && a[f]) el.value = a[f];
-    });
-
-    document.getElementById('email_cn').value = a.email || '';
-    document.getElementById('password_cn').value = a.password || '';
-
-    if (a.education_type) document.getElementById('education_type').value = a.education_type;
-
-    if (a.specialization_code) {
-      document.getElementById('spec_code').value = a.specialization_code;
-      document.getElementById('spec_code').dispatchEvent(new Event('change'));
-      document.getElementById('spec_code_cn').value = a.specialization_code;
-      document.getElementById('spec_code_cn').dispatchEvent(new Event('change'));
+    if (a.gender) {
+      const radio = document.querySelector(`#gender-group input[value="${a.gender}"]`);
+      if (radio) radio.checked = true;
+    }
+    if (a.education) {
+      const radio = document.querySelector(`#education-group input[value="${a.education}"]`);
+      if (radio) radio.checked = true;
     }
 
     document.getElementById('loading').style.display = 'none';
@@ -200,26 +169,22 @@ async function loadData() {
 }
 
 async function saveData() {
-  const codeEl = document.getElementById('spec_code');
-  const nameEl = document.getElementById('spec_name');
-
   const data = {
     first_name_ru: document.getElementById('first_name_ru').value,
     last_name_ru: document.getElementById('last_name_ru').value,
     first_name_cn: document.getElementById('first_name_cn').value,
     last_name_cn: document.getElementById('last_name_cn').value,
+    gender: document.querySelector('#gender-group input:checked').value,
     email: document.getElementById('email').value,
     password: document.getElementById('password').value,
     snils: document.getElementById('snils').value,
     passport_number: document.getElementById('passport_number').value,
     passport_expiry: document.getElementById('passport_expiry').value,
     passport_issued_by: document.getElementById('passport_issued_by').value,
-    education_type: document.getElementById('education_type').value,
-    specialization_code: codeEl.value,
-    specialization_name: nameEl.value,
+    education: document.querySelector('#education-group input:checked').value,
+    specialization_code: document.getElementById('spec_code').value,
+    specialization_name: document.getElementById('spec_name').value,
     partner: document.getElementById('partner').value,
-    doc1_number: document.getElementById('doc1_number').value,
-    doc2_number: document.getElementById('doc2_number').value,
   };
 
   try {

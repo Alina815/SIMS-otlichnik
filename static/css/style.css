@@ -3,8 +3,8 @@
 
 :root {
   --bg: #f0f2f5;
-  --surface: #ffffff;
-  --surface2: #f8f9fa;
+  --surface-light: #ffffff;
+  --surface-dark: #f8f9fa;
   --border: #dde1e7;
   --border-focus: #4a7fd4;
   --text: #1a1d23;
@@ -13,6 +13,8 @@
   --accent-hover: #1d4ed8;
   --accent-active: #1e3a8a;
   --danger: #dc2626;
+  --danger-hover: #ff9a9a;
+  --danger-active: #fa8888;
   --success: #16a34a;
   --warning: #d97706;
   --shadow: 0 1px 3px rgba(0,0,0,0.08), 0 1px 2px rgba(0,0,0,0.06);
@@ -46,7 +48,7 @@ html, body {
   align-items: center;
   gap: 12px;
   padding: 10px 20px;
-  background: var(--surface);
+  background: var(--surface-light);
   border-bottom: 1px solid var(--border);
   box-shadow: var(--shadow);
   flex-shrink: 0;
@@ -79,7 +81,7 @@ html, body {
   padding: 20px;
 }
 
-/* ─── Buttons ────────────────────────────────────────────────────────────────── */
+/* ###Buttons### */
 .btn {
   display: inline-flex;
   align-items: center;
@@ -98,33 +100,31 @@ html, body {
   user-select: none;
 }
 .btn:active { transform: translateY(1px); }
-.btn svg { width: 15px; height: 15px; }
+.btn svg {flex-shrink: 0; width: 15px; height: 15px; }
 
 .btn-primary {
   background: var(--accent);
-  color: #fff;
+  color: var(--surface-light);
   border-color: var(--accent);
 }
 .btn-primary:hover { background: var(--accent-hover); border-color: var(--accent-hover); }
 .btn-primary:active { background: var(--accent-active); }
 
 .btn-secondary {
-  background: var(--surface);
+  background: var(--surface-light);
   color: var(--text);
   border-color: var(--border);
 }
-.btn-secondary:hover { background: var(--surface2); border-color: #c5cad2; }
+.btn-secondary:hover { background: var(--surface-dark); border-color: #c5cad2; }
 .btn-secondary:active { background: #e8eaed; }
 
 .btn-danger {
-  background: var(--surface);
+  background: var(--surface-light);
   color: var(--danger);
-  border-color: #fca5a5;
+  border-color: var(--danger-hover);
 }
-.btn-danger:hover { background: #fef2f2; border-color: var(--danger); }
-
-.btn-sm { padding: 4px 10px; font-size: 12px; }
-.btn-lg { padding: 10px 20px; font-size: 14px; }
+.btn-danger:hover { background: var(--surface-dark); border-color: var(--danger); }
+.btn-danger:active {background: var(--danger-active);}
 
 .btn-toolbar {
   display: flex;
@@ -132,6 +132,7 @@ html, body {
   align-items: center;
   flex-wrap: wrap;
 }
+/* ###Buttons### */
 
 /* ─── Forms ──────────────────────────────────────────────────────────────────── */
 .form-group {
@@ -155,7 +156,7 @@ html, body {
   font-family: var(--font);
   font-size: 13px;
   color: var(--text);
-  background: var(--surface);
+  background: var(--surface-light);
   transition: border-color var(--transition), box-shadow var(--transition);
   width: 100%;
 }
@@ -175,31 +176,52 @@ select.form-control {
   padding-right: 30px;
 }
 
-/* ─── Cards ──────────────────────────────────────────────────────────────────── */
+/* ###Cards### */
 .card {
-  background: var(--surface);
+  background: var(--surface-light);
   border: 1px solid var(--border);
   border-radius: var(--radius-lg);
   box-shadow: var(--shadow);
+  padding: 24px;
 }
-
-.card-header {
-  padding: 14px 20px;
-  border-bottom: 1px solid var(--border);
+.fields-section { margin-bottom: 24px; }
+.field-row {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-bottom: 10px;
+}
+.field-value {
+  padding: 7px 10px;
+  background: var(--surface-dark);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  font-size: 13px;
+  min-height: 34px;
+  color: var(--text);
+}
+.field-value.empty { color: var(--text-muted); font-style: italic; }
+.radio-group {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  padding: 7px 10px;
+  background: var(--surface-dark);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  min-height: 34px;
+}
+.radio-group label {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  gap: 12px;
+  gap: 6px;
+  cursor: pointer;
 }
-
-.card-title {
-  font-size: 14px;
-  font-weight: 600;
+.radio-group input {
+  margin: 5px;
+  cursor: pointer;
 }
-
-.card-body {
-  padding: 20px;
-}
+/* ###Cards### */
 
 /* ###Above table### */
 .table-controls {
@@ -220,7 +242,7 @@ select.form-control {
   padding: 6px 16px;
   border: 1px solid var(--border);
   border-radius: var(--radius);
-  background: var(--surface);
+  background: var(--surface-light);
   cursor: pointer;
   font-size: 13px;
   transition: all var(--transition);
@@ -228,12 +250,12 @@ select.form-control {
 
 .filter-tab.active {
   background: var(--accent);
-  color: #fff;
+  color: var(--surface-light);
   border-color: var(--accent);
 }
 
 .filter-tab:hover:not(.active) {
-  background: var(--surface2);
+  background: var(--surface-dark);
 }
 
 .search-box {
@@ -271,7 +293,7 @@ select.form-control {
   overflow: auto;
   border-radius: var(--radius-lg);
   border: 1px solid var(--border);
-  background: var(--surface);
+  background: var(--surface-light);
 }
 
 table {
@@ -282,7 +304,7 @@ table {
 }
 
 thead th {
-  background: var(--surface2);
+  background: var(--surface-dark);
   padding: 10px 12px;
   text-align: left;
   font-weight: 600;
@@ -308,7 +330,7 @@ tbody tr {
   cursor: pointer;
   transition: background var(--transition);
 }
-tbody tr:hover { background: #f5f7fa; }
+tbody tr:hover { background: var(--surface-dark); }
 tbody tr:last-child { border-bottom: none; }
 
 tbody td {
@@ -337,7 +359,7 @@ tbody td {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: var(--surface2);
+  background: var(--surface-dark);
   overflow: hidden;
   position: relative;
 }
@@ -355,6 +377,7 @@ tbody td {
   font-size: 11px;
 }
 .photo-placeholder .placeholder-icon svg {
+  flex-shrink: 0;
   width: 40px;
   height: 40px;
   color: #c5cad2;
@@ -369,7 +392,7 @@ tbody td {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: var(--surface2);
+  background: var(--surface-dark);
   overflow: hidden;
   cursor: pointer;
   transition: border-color var(--transition), background var(--transition);
@@ -392,6 +415,7 @@ tbody td {
   padding: 10px;
 }
 .scan-placeholder .placeholder-icon svg {
+  flex-shrink: 0;
   width: 30px;
   height: 30px;
   color: #c5cad2;

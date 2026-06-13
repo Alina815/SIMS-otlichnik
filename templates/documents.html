@@ -109,7 +109,7 @@
   <div class="topbar">
     <a class="topbar-back" id="back-btn" href="#">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
-      Страница абитуриента
+      Назад к странице абитуриента
     </a>
     <span class="topbar-title">Загрузка сканов документов</span>
   </div>
@@ -137,59 +137,12 @@
 <div id="toast-container" class="toast-container"></div>
 <script src="/static/js/utils.js"></script>
 <script>
-const APPLICANT_ID = 1;
+const APPLICANT_ID = {{applicant_id}};
+let DOC_TYPES = [];
+let docsData = { ru: {}, cn: {} };
+
 document.getElementById('back-btn').href = `/applicant/${APPLICANT_ID}`;
 document.getElementById('cancel-btn').onclick = () => navigate(`/applicant/${APPLICANT_ID}`);
-
-const DOC_TYPES = [
-  {
-    key: 'passport',
-    label: 'Паспорт',
-    fields: [
-      { key: 'number', label: 'Номер' },
-      { key: 'issued_date', label: 'Когда выдан', type: 'date' },
-      { key: 'issued_by', label: 'Кем выдан' },
-      { key: 'issue_place', label: 'Место выдачи' },
-      { key: 'birth_province', label: 'Провинция рождения' },
-    ]
-  },
-  {
-    key: 'snils',
-    label: 'СНИЛС',
-    fields: [
-      { key: 'number', label: 'Номер' },
-    ]
-  },
-  {
-    key: 'diploma',
-    label: 'Аттестат (школа) / Диплом (ВУЗ)',
-    fields: [
-      { key: 'number', label: 'Номер' },
-      { key: 'institution_name', label: 'Название учебного заведения' },
-      { key: 'issue_date', label: 'Дата выдачи', type: 'date' },
-    ]
-  },
-  {
-    key: 'transcript',
-    label: 'Свидетельство об оценках (школа) / Диплом бакалавра (ВУЗ)',
-    fields: [
-      { key: 'number', label: 'Номер' },
-      { key: 'institution_name', label: 'Название учебного заведения' },
-      { key: 'issue_date', label: 'Дата выдачи', type: 'date' },
-    ]
-  },
-  {
-    key: 'grade_table',
-    label: 'Табель успеваемости (ВУЗ)',
-    fields: [
-      { key: 'number', label: 'Номер' },
-      { key: 'institution_name', label: 'Название учебного заведения' },
-      { key: 'issue_date', label: 'Дата выдачи', type: 'date' },
-    ]
-  },
-];
-
-let docsData = { ru: {}, cn: {} };
 
 function switchLang(lang, tabEl) {
   document.querySelectorAll('.lang-tab').forEach(t => t.classList.remove('active'));
@@ -208,7 +161,6 @@ function buildDocCol(docType, lang, data) {
   title.textContent = docType.label;
   col.appendChild(title);
 
-  // Scan area
   const scanArea = document.createElement('div');
   scanArea.className = 'scan-area';
   scanArea.id = `scan-${docType.key}-${lang}`;
@@ -236,7 +188,6 @@ function buildDocCol(docType, lang, data) {
   scanArea.addEventListener('click', () => fileInput.click());
   col.appendChild(scanArea);
 
-  // Fields
   const fieldsDiv = document.createElement('div');
   fieldsDiv.className = 'doc-fields';
   docType.fields.forEach(f => {
@@ -295,7 +246,59 @@ async function saveAll() {
 
 async function loadPage() {
   try {
-    // Load existing document data
+    document.getElementById('loading').style.display = 'flex';
+
+    const applicant = await apiGet(`/api/applicants/${APPLICANT_ID}`);
+    const applicantEducation = applicant.education;
+
+    DOC_TYPES = [
+      {
+        key: 'passport',
+        label: 'Паспорт',
+        fields: [
+          { key: 'number', label: 'Номер' },
+          { key: 'issued_date', label: 'Когда выдан', type: 'date' },
+          { key: 'issued_by', label: 'Кем выдан' },
+          { key: 'issue_place', label: 'Место выдачи' },
+          { key: 'birth_province', label: 'Провинция рождения' },
+        ]
+      },
+      {
+        key: 'snils',
+        label: 'СНИЛС',
+        fields: [
+          { key: 'number', label: 'Номер' },
+        ]
+      },
+      {
+        key: 'doc_1',
+        label: applicantEducation == 'bachelor' ? 'Аттестат' : 'Диплом',
+        fields: [
+          { key: 'number', label: 'Номер' },
+          { key: 'institution_name', label: 'Название учебного заведения' },
+          { key: 'issue_date', label: 'Дата выдачи', type: 'date' },
+        ]
+      },
+      {
+        key: 'doc_2',
+        label: applicantEducation == 'bachelor' ? 'Свидетельство об оценках' : 'Диплом бакалавра',
+        fields: [
+          { key: 'number', label: 'Номер' },
+          { key: 'institution_name', label: 'Название учебного заведения' },
+          { key: 'issue_date', label: 'Дата выдачи', type: 'date' },
+        ]
+      },
+      {
+        key: 'grade_table',
+        label: 'Табель успеваемости',
+        fields: [
+          { key: 'number', label: 'Номер' },
+          { key: 'institution_name', label: 'Название учебного заведения' },
+          { key: 'issue_date', label: 'Дата выдачи', type: 'date' },
+        ]
+      },
+];
+
     for (const lang of ['ru', 'cn']) {
       docsData[lang] = {};
       for (const dt of DOC_TYPES) {
@@ -305,7 +308,6 @@ async function loadPage() {
       }
     }
 
-    // Build columns
     for (const lang of ['ru', 'cn']) {
       const container = document.getElementById(`docs-${lang}`);
       DOC_TYPES.forEach(dt => {

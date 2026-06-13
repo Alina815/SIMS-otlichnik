@@ -19,46 +19,9 @@
       flex-shrink: 0;
     }
     .right-panel { flex: 1; }
-    .fields-section { margin-bottom: 24px; }
-    .field-row {
-      display: flex;
-      flex-direction: column;
-      gap: 4px;
-      margin-bottom: 10px;
-    }
-    .field-value {
-      padding: 7px 10px;
-      background: var(--surface2);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      font-size: 13px;
-      min-height: 34px;
-      color: var(--text);
-    }
-    .field-value.empty { color: var(--text-muted); font-style: italic; }
     .action-buttons { display: flex; flex-direction: column; gap: 10px; width: 180px; }
     .action-buttons .btn { width: 100%; justify-content: center; }
     .delete-btn {margin-top: 16 px;};
-     .radio-group {
-      display: flex;
-      gap: 16px;
-      align-items: center;
-      padding: 7px 10px;
-      background: var(--surface2);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      min-height: 34px;
-    }
-    .radio-group label {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      cursor: pointer;
-    }
-    .radio-group input {
-      margin: 5px;
-      cursor: pointer;
-    }
   </style>
 </head>
 <body>
@@ -66,7 +29,7 @@
   <div class="topbar">
     <a class="topbar-back" href="/">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
-      Назад к таблице
+      Назад к общей таблице
     </a>
     <span class="topbar-title" id="page-title">Страница абитуриента</span>
   </div>
@@ -96,7 +59,7 @@
             </button>
             <button class="btn btn-secondary" id="docs-btn">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8zM14 2v6h6M16 13H8M16 17H8M10 9H8"/></svg>
-              Загрузить сканы документов
+              Загрузить сканы
             </button>
             <button class="btn btn-danger delete-btn" id="delete-btn">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 7h16M10 11v6M14 11v6M5 7l1 13a2 2 0 002 2h8a2 2 0 002-2l1-13M9 7V4a1 1 0 011-1h4a1 1 0 011 1v3"/></svg>
@@ -110,8 +73,8 @@
             <div class="section-header">Основные данные</div>
             <div class="form-grid">
               <div class="field-row"><label class="form-label">Имя на русском</label><div class="field-value" id="ru-first-name">—</div></div>
-              <div class="field-row"><label class="form-label">Имя на китайском</label><div class="field-value" id="ru-first-name">—</div></div>
-              <div class="field-row"><label class="form-label">Фамилия на русском</label><div class="field-value" id="cn-last-name">—</div></div>
+              <div class="field-row"><label class="form-label">Имя на китайском</label><div class="field-value" id="cn-first-name">—</div></div>
+              <div class="field-row"><label class="form-label">Фамилия на русском</label><div class="field-value" id="ru-last-name">—</div></div>
               <div class="field-row"><label class="form-label">Фамилия на китайском</label><div class="field-value" id="cn-last-name">—</div></div>
               <div class="field-row"><label class="form-label">Email</label><div class="field-value" id="email">—</div></div>
               <div class="field-row"><label class="form-label">Пароль</label><div class="field-value" id="password">—</div></div>
@@ -161,7 +124,7 @@
 <div id="toast-container" class="toast-container"></div>
 <script src="/static/js/utils.js"></script>
 <script>
-const APPLICANT_ID = 1;
+const APPLICANT_ID = {{applicant_id}};
 let applicantData = null;
 
 function setField(id, val) {
@@ -227,9 +190,9 @@ async function loadApplicant() {
     setField('spec-name', a.specialization_name);
 
     if (a.gender) setRadioValue('gender-group', a.gender);
-    if (a.edu_type) {
-      setRadioValue('edu-type', a.edu_type);
-      updateDocumentLabels(a.edu_type);
+    if (a.education) {
+      setRadioValue('edu-type', a.education);
+      updateDocumentLabels(a.education);
     } else {
       updateDocumentLabels(null);
     }
