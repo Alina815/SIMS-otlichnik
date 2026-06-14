@@ -63,14 +63,6 @@
               <input class="form-control" id="password" type="text" placeholder="Пароль">
             </div>
             <div class="form-group">
-              <label class="form-label">Код специализации</label>
-              <input class="form-control" id="spec_code" type="text" placeholder="Код">
-            </div>
-            <div class="form-group">
-              <label class="form-label">Название специализации</label>
-              <input class="form-control" id="spec_name" type="text" placeholder="Название">
-            </div>
-            <div class="form-group">
               <label class="form-label">Пол</label>
               <div class="radio-group" id="gender-group">
                 <label><input type="radio" name="gender" value="male"> Мужчина</label>
@@ -93,25 +85,18 @@
           <div class="section-header">Дополнительные данные</div>
           <div class="form-grid">
             <div class="form-group">
-              <label class="form-label">СНИЛС</label>
-              <input class="form-control" id="snils" type="text" placeholder="000-000-000 00">
+              <label class="form-label">Код специализации</label>
+              <input class="form-control" id="spec_code" type="text" placeholder="Код">
             </div>
             <div class="form-group">
-              <label class="form-label">Номер паспорта</label>
-              <input class="form-control" id="passport_number" type="text" placeholder="0000 000000">
-            </div>
-            <div class="form-group">
-              <label class="form-label">Срок действия паспорта</label>
-              <input class="form-control" id="passport_expiry" type="date">
-            </div>
-            <div class="form-group">
-              <label class="form-label">Кем выдан паспорт</label>
-              <input class="form-control" id="passport_issued_by" type="text" placeholder="Наименование органа">
+              <label class="form-label">Название специализации</label>
+              <input class="form-control" id="spec_name" type="text" placeholder="Название">
             </div>
             <div class="form-group">
               <label class="form-label">Партнёр</label>
               <input class="form-control" id="partner" type="text" placeholder="Организация-партнёр">
             </div>
+          </div>
           </div>
         </div>
 
@@ -146,10 +131,6 @@ async function loadData() {
     document.getElementById('password').value = a.password || '';
     document.getElementById('spec_code').value = a.specialization_code || '';
     document.getElementById('spec_name').value = a.specialization_name || '';
-    document.getElementById('snils').value = a.snils || '';
-    document.getElementById('passport_number').value = a.passport_number || '';
-    document.getElementById('passport_expiry').value = a.passport_expiry || '';
-    document.getElementById('passport_issued_by').value = a.passport_issued_by || '';
     document.getElementById('partner').value = a.partner || '';
 
     if (a.gender) {
@@ -177,10 +158,6 @@ async function saveData() {
     gender: document.querySelector('#gender-group input:checked').value,
     email: document.getElementById('email').value,
     password: document.getElementById('password').value,
-    snils: document.getElementById('snils').value,
-    passport_number: document.getElementById('passport_number').value,
-    passport_expiry: document.getElementById('passport_expiry').value,
-    passport_issued_by: document.getElementById('passport_issued_by').value,
     education: document.querySelector('#education-group input:checked').value,
     specialization_code: document.getElementById('spec_code').value,
     specialization_name: document.getElementById('spec_name').value,

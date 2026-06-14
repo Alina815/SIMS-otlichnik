@@ -44,11 +44,7 @@
               <span>Фото</span>
             </div>
           </div>
-          <input type="file" id="photo-input" accept="image/*" onchange="uploadPhoto(this)">
-          <button class="btn btn-secondary" onclick="document.getElementById('photo-input').click()">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M17 8l-5-5-5 5M12 3v12"/></svg>
-            Загрузить фото
-          </button>
+          <input type="file" id="photo-input" accept="image/*" style="display: none;" onchange="uploadPhoto(this)">
 
           <div class="divider" style="width:100%"></div>
 
@@ -78,8 +74,6 @@
               <div class="field-row"><label class="form-label">Фамилия на китайском</label><div class="field-value" id="cn-last-name">—</div></div>
               <div class="field-row"><label class="form-label">Email</label><div class="field-value" id="email">—</div></div>
               <div class="field-row"><label class="form-label">Пароль</label><div class="field-value" id="password">—</div></div>
-              <div class="field-row"><label class="form-label">Код специализации</label><div class="field-value" id="spec-code">—</div></div>
-              <div class="field-row"><label class="form-label">Название специализации</label><div class="field-value" id="spec-name">—</div></div>
               <div class="field-row">
                 <label class="form-label">Пол</label>
                 <div class="radio-group" id="gender-group">
@@ -88,7 +82,7 @@
                 </div>
               </div>
               <div class="field-row">
-                <label class="form-label">Тип образования</label>
+                <label class="form-label">Образование</label>
                 <div class="radio-group" id="education-group">
                   <label><input type="radio" name="education" value="bachelor" disabled>Бакалавр</label>
                   <label><input type="radio" name="education" value="master" disabled>Магистр</label>
@@ -101,18 +95,8 @@
           <div class="fields-section">
             <div class="section-header">Дополнительные данные</div>
             <div class="form-grid">
-              <div class="field-row"><label class="form-label">СНИЛС</label><div class="field-value" id="snils">—</div></div>
-              <div class="field-row"><label class="form-label">Номер паспорта</label><div class="field-value" id="passport-number">—</div></div>
-              <div class="field-row"><label class="form-label">Срок действия паспорта</label><div class="field-value" id="passport-expiry">—</div></div>
-              <div class="field-row"><label class="form-label">Кем выдан паспорт</label><div class="field-value" id="passport-issued">—</div></div>
-              <div class="field-row" id="doc1-row">
-                <label class="form-label" id="doc1-label">Номер документа 1</label>
-                <div class="field-value" id="doc1-number">—</div>
-              </div>
-              <div class="field-row" id="doc2-row">
-                <label class="form-label" id="doc2-label">Номер документа 2</label>
-                <div class="field-value" id="doc2-number">—</div>
-              </div>
+              <div class="field-row"><label class="form-label">Код специализации</label><div class="field-value" id="spec-code">—</div></div>
+              <div class="field-row"><label class="form-label">Название специализации</label><div class="field-value" id="spec-name">—</div></div>
               <div class="field-row"><label class="form-label">Партнёр</label><div class="field-value" id="partner">—</div></div>
             </div>
           </div>
@@ -146,32 +130,6 @@ function setRadioValue(groupId, value) {
   });
 }
 
-function updateDocumentLabels(studyType) {
-  const doc1Label = document.getElementById('doc1-label');
-  const doc2Label = document.getElementById('doc2-label');
-  const doc1Row = document.getElementById('doc1-row');
-  const doc2Row = document.getElementById('doc2-row');
-  
-  if (!doc1Label || !doc2Label) return;
-  
-  if (studyType === 'bachelor') {
-    doc1Label.textContent = 'Аттестат / Справка с места учёбы';
-    doc2Label.textContent = 'Свидетельство об оценках';
-    doc1Row?.classList.add('highlight');
-    doc2Row?.classList.add('highlight');
-  } else if (studyType === 'master') {
-    doc1Label.textContent = 'Диплом';
-    doc2Label.textContent = 'Диплом бакалавра';
-    doc1Row?.classList.add('highlight');
-    doc2Row?.classList.add('highlight');
-  } else {
-    doc1Label.textContent = 'Номер документа 1';
-    doc2Label.textContent = 'Номер документа 2';
-    doc1Row?.classList.remove('highlight');
-    doc2Row?.classList.remove('highlight');
-  }
-}
-
 async function loadApplicant() {
   try {
     applicantData = await apiGet(`/api/applicants/${APPLICANT_ID}`);
@@ -186,24 +144,15 @@ async function loadApplicant() {
     setField('cn-last-name', a.last_name_cn);
     setField('email', a.email);
     setField('password', a.password);
-    setField('spec-code', a.specialization_code);
-    setField('spec-name', a.specialization_name);
 
     if (a.gender) setRadioValue('gender-group', a.gender);
     if (a.education) {
-      setRadioValue('edu-type', a.education);
-      updateDocumentLabels(a.education);
-    } else {
-      updateDocumentLabels(null);
+      setRadioValue('education-group', a.education);
     }
 
-    setField('snils', a.snils);
-    setField('passport-number', a.passport_number);
-    setField('passport-expiry', a.passport_expiry);
-    setField('passport-issued', a.passport_issued_by);
+    setField('spec-code', a.specialization_code);
+    setField('spec-name', a.specialization_name);
     setField('partner', a.partner);
-    setField('doc1-number', a.doc1_number);
-    setField('doc2-number', a.doc2_number);
 
     if (a.photo_path) {
       const container = document.getElementById('photo-container');
@@ -232,8 +181,32 @@ async function uploadPhoto(input) {
   }
 }
 
+document.getElementById('photo-container').addEventListener('click', () => {
+  document.getElementById('photo-input').click();
+})
+
 document.getElementById('edit-btn').onclick = () => navigate(`/edit/${APPLICANT_ID}`);
 document.getElementById('docs-btn').onclick = () => navigate(`/documents/${APPLICANT_ID}`);
+document.getElementById('delete-btn').onclick = async () => {
+  if (!confirm('Вы уверены, что хотите удалить этого абитуриента?\n\nЭто действие нельзя отменить.')) {
+    return;
+  }
+  
+  const deleteBtn = document.getElementById('delete-btn');
+  const originalText = deleteBtn.innerHTML;
+  deleteBtn.disabled = true;
+  deleteBtn.innerHTML = '<span>Удаление...</span>';
+  
+  try {
+    await apiDelete(`/api/applicants/${APPLICANT_ID}`);
+    showToast('Абитуриент удалён', 'success');
+    setTimeout(() => navigate('/'), 800);
+  } catch (e) {
+    showToast('Ошибка удаления', 'error');
+    deleteBtn.disabled = false;
+    deleteBtn.innerHTML = originalText;
+  }
+};
 
 loadApplicant();
 </script>

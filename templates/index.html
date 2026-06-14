@@ -57,7 +57,7 @@
 
 <script src="/static/js/utils.js"></script>
 <script>
-let currentFilter = 'all';  // 'all', 'bachelor', 'master'
+let currentFilter = 'all';
 let searchQuery = '';
 
 let applicants = [];
@@ -93,6 +93,27 @@ async function loadApplicants() {
   }
 }
 
+function getDocumentLabels() {
+  if (currentFilter === 'bachelor') {
+    return { doc1: 'Аттестат', doc2: 'Свидетельство об оценках' };
+  } else if (currentFilter === 'master') {
+    return { doc1: 'Диплом', doc2: 'Диплом бакалавра' };
+  } else {
+    return { doc1: 'Аттестат / Диплом', doc2: 'Свидетельство / Диплом бакалавра' };
+  }
+}
+
+function updateColumnLabels() {
+  const labels = getDocumentLabels();
+  const headers = document.querySelectorAll("thead th");
+  if (headers.length) {
+    const doc1Index = columns.findIndex(c => c.key === 'doc1_number');
+    const doc2Index = columns.findIndex(c => c.key === 'doc2_number');
+    if (headers[doc1Index]) headers[doc1Index].textContent = labels.doc1;
+    if (headers[doc2Index]) headers[doc2Index].textContent = labels.doc2;
+  }
+}
+
 function filterApplicants(applicants) {
   let filtered = [...applicants];
   if (currentFilter == 'bachelor') {
@@ -125,8 +146,19 @@ function renderTable() {
     });
   }
 
+  const labels = getDocumentLabels();
+
+  const dynamicColumns = columns.map(c => {
+    if (c.key == 'doc1_number') {
+      return { ...c, label: labels.doc1};
+    } else if (c.key === 'doc2_number') {
+      return { ...c, label: labels.doc2 };
+    }
+    return c;
+  });
+
   const thead = `<thead><tr>
-    ${columns.map(c => `<th class="sortable" onclick="setSort('${c.key}')" data-col="${c.key}">
+    ${dynamicColumns.map(c => `<th class="sortable" onclick="setSort('${c.key}')" data-col="${c.key}">
       ${c.label}${sortCol === c.key ? (sortDir === 1 ? ' ↑' : ' ↓') : ''}
     </th>`).join('')}
     <th>Действия</th>
